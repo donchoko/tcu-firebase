@@ -1,0 +1,16 @@
+<form (ngSubmit)="this.createUser()"> 
+  <div class="form-group">
+    <label for="inputName">Nombre</label>
+    <input type="email" class="form-control" id="inputName" name="inputName" placeholder="Nombre" [(ngModel)]="this._school.name">
+  </div>
+  <div class="form-group">
+    <label for="inputAdress">Dirección</label>
+    <input type="email" class="form-control" id="inputAdress" name="inputAdress" placeholder="Dirección" [(ngModel)]="this._school.address">
+  </div>
+  <div class="form-group">
+    <label for="inputPhone">Teléfono</label>
+    <input type="email" class="form-control" id="inputPhone" name="inputPhone" placeholder="Teléfono" [(ngModel)]="this._school.phone">
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Crear</button>
+</form>
