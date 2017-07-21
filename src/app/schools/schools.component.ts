@@ -24,6 +24,8 @@ export class SchoolsComponent implements OnInit {
     });
   }
 
+
+
   ngOnInit() {
   }
 
@@ -37,6 +39,10 @@ export class SchoolsComponent implements OnInit {
 
   goEditSchool(){
     console.log("AGREGAR LOGICA PARA IR A EDITAR");
+  }
+
+  goUsers(){
+    this.router.navigate(['/users']);
   }
 
 }

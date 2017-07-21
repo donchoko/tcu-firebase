@@ -1,3 +1,34 @@
-<p>
-  create-section works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goSections()">Regresar</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12">
+    <form (ngSubmit)="this.createSection()"> 
+      <div class="form-group">
+        <label for="selectCourse">Grado</label>
+        <select class="form-control" id="selectCourse" name="selectCourse"  [(ngModel)]="this._section.course">
+          <option *ngFor="let c of this.courses" [ngValue]="c">{{c}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="inputSection">Sección</label>
+        <input class="form-control" id="inputSection" name="inputSection" placeholder="Sección" [(ngModel)]="this._section.section">
+      </div>
+      <div class="form-group">
+        <label for="selectSchool">Colegio</label>
+        <select class="form-control" id="selectSchool" name="selectSchool"  [(ngModel)]="this._section.school">
+          <option *ngFor="let school of this.schools | async" [ngValue]="school.$key">{{school.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="selectYear">Año</label>
+        <select class="form-control" id="selectYear" name="selectYear"  [(ngModel)]="this._section.year">
+          <option *ngFor="let year of this.years" [ngValue]="year">{{year}}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+  </div>
+</div>

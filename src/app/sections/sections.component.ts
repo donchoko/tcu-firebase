@@ -22,7 +22,7 @@ export class SectionsComponent implements OnInit {
         this.route.paramMap.map((params: ParamMap) =>
           this.db.list('/sections', {
             query: {
-              equalTo: params.get('id')
+              equalTo: params.get('school')
             }
           })
         ).subscribe((sections: FirebaseListObservable<any>) => this._sections = sections);
@@ -40,7 +40,7 @@ export class SectionsComponent implements OnInit {
 
   goCreateSection() {
     this.route.paramMap.map((params: ParamMap) =>
-      params.get('id')
+      params.get('school')
     ).subscribe((param)=> this.router.navigate(['/sections/'+param+'/create']))
     
   }

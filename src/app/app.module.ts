@@ -18,15 +18,19 @@ import { UsersComponent } from './users/users.component';
 import { SectionsComponent } from './sections/sections.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { CreateSectionComponent } from './create-section/create-section.component';
+import { StudentsComponent } from './students/students.component';
+import { CreateStudentComponent } from './create-student/create-student.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
   { path:'users', component:UsersComponent},
   { path:'schools', component:SchoolsComponent},
-  { path:'sections/:id', component:SectionsComponent},
+  { path:'sections/:school', component:SectionsComponent},
+  { path:'users/:school/:classroom', component:SectionsComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
-  { path:'sections/:id/create', component:CreateSectionComponent},
+  { path:'students/:school/:classroom/create', component:CreateUserComponent},
+  { path:'sections/:school/create', component:CreateSectionComponent},
   { path:'**', component:PageNotFoundComponent},
 ]
 
@@ -40,7 +44,9 @@ const appRoutes: Routes= [
     UsersComponent,
     SectionsComponent,
     PageNotFoundComponent,
-    CreateSectionComponent
+    CreateSectionComponent,
+    StudentsComponent,
+    CreateStudentComponent
   ],
   imports: [
     BrowserModule,
