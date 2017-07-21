@@ -6,7 +6,6 @@ import { User } from 'firebase/app';
 import { Router } from '@angular/router';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
-import { AdmindbService } from '../admindb.service';
 import { environment } from 'environments/environment';
 import * as firebase from 'firebase';
 
@@ -45,17 +44,19 @@ export class CreateUserComponent implements OnInit {
       console.log("No logueado");
     }
 
-    var users = this.db.object('/users');
 
     tApp.auth().createUserWithEmailAndPassword(this._user.email, this._user.pass)
     .then((newUser) => {
       if(newUser) return newUser
     })
     .then((newUser)=>{
+        var users = this.db.object('/users/'+newUser.uid);
         users.set({
-          userUid: newUser.uid,
+          name: this._user.name,
+          lastName: this._user.lastName,
+          email: this._user.email,
           role: this._user.type
-        })
+        }).then(()=>this.goUsers());
       }
     );
     
@@ -66,6 +67,8 @@ export class CreateUserComponent implements OnInit {
 
   ngOnInit() {
     this._user = {
+      name: '',
+      last_name:'',
       email: '',
       pass: '',
       type: ''
@@ -75,6 +78,10 @@ export class CreateUserComponent implements OnInit {
       {name:'Administrador', value:'ADMIN'},
       {name:'Colaborador', value:'COLAB'}
     ]
+  }
+
+  goUsers(){
+    this.router.navigate(['/users']);
   }
 
 }

@@ -14,9 +14,11 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { DataService } from './data.service';
 import { CreateSchoolComponent } from './create-school/create-school.component';
 import { CoreModule } from './core/core.module';
+import { UsersComponent } from './users/users.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
+  { path:'users', component:UsersComponent},
   { path:'schools', component:SchoolsComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
@@ -28,7 +30,8 @@ const appRoutes: Routes= [
     LoginComponent,
     SchoolsComponent,
     CreateUserComponent,
-    CreateSchoolComponent
+    CreateSchoolComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

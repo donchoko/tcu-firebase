@@ -4,30 +4,29 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+
 @Component({
-  selector: 'app-schools',
-  templateUrl: './schools.component.html',
-  styleUrls: ['./schools.component.css']
+  selector: 'app-users',
+  templateUrl: './users.component.html',
+  styleUrls: ['./users.component.css']
 })
-export class SchoolsComponent implements OnInit {
+export class UsersComponent implements OnInit {
+
+  private users: FirebaseListObservable<any>;
 
   constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase) { 
-    this.afAuth.authState.subscribe(authUser=>{
-      if(!authUser){
-        this.router.navigate(['']);
-      }
-    });
+    this.users= this.db.list('/users');
+    console.log(this.users);
   }
 
   ngOnInit() {
   }
 
-  goUsers(){
-    this.router.navigate(['/users']);
+  goSchools(){
+    this.router.navigate(['/schools']);
   }
 
-  goCreateSchool(){
-    this.router.navigate(['/schools/create']);
+  goCreateUser(){
+    this.router.navigate(['/users/create']);
   }
-
 }

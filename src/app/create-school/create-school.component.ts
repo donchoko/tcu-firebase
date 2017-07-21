@@ -37,6 +37,10 @@ export class CreateSchoolComponent implements OnInit {
     }
   }
 
+  goSchools(){
+    this.router.navigate(['/schools']);
+  }
+
   ngOnInit() {
     this._school= {
       name:'',

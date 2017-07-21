@@ -1,3 +1,27 @@
-<p>
-  schools works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goUsers()">Usuarios</button>
+  </div>
+  <div class="col-md-4 offset-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goCreateSchool()">Crear colegio</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12">
+    <table class="table table-responsive">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Editar</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    
+    </table>
+  </div>
+  
+</div>
