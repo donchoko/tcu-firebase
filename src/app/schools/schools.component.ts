@@ -11,10 +11,15 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class SchoolsComponent implements OnInit {
 
+  private _schools:FirebaseListObservable<any>;
+
   constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase) { 
     this.afAuth.authState.subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
+      }
+      else{
+        this._schools = this.db.list('/schools');
       }
     });
   }
@@ -22,12 +27,16 @@ export class SchoolsComponent implements OnInit {
   ngOnInit() {
   }
 
-  goUsers(){
-    this.router.navigate(['/users']);
+  goClassrooms(uid:string){
+    this.router.navigate(['/sections',uid]);
   }
 
   goCreateSchool(){
     this.router.navigate(['/schools/create']);
+  }
+
+  goEditSchool(){
+    console.log("AGREGAR LOGICA PARA IR A EDITAR");
   }
 
 }

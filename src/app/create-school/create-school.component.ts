@@ -21,20 +21,15 @@ export class CreateSchoolComponent implements OnInit {
     });
   }
 
-  createUser(){
-    if(!this.data.currentUser){
-      this.router.navigate(['']);
-    }
-    else if (this.data.currentUser) {
-      this.data.currentUser.subscribe(user => {
-        if (!user) {
-          this.router.navigate(['']);
-        }
-      });
-    }
-    else{
-      this.db.object('/schools').set(this._school);
-    }
+  createSchool(){
+    this.afAuth.authState.subscribe(authUser=>{
+      if(!authUser){
+        this.router.navigate(['']);
+      }
+      else{
+        this.db.list('/schools').push(this._school).then(()=>this.goSchools());
+      }
+    });
   }
 
   goSchools(){

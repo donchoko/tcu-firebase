@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goSchools()">Colegios</button>
+  </div>
+  <div class="col-md-4 offset-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goCreateSection()">Crear sección</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12 table-responsive">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Grado</th>
+          <th>Sección</th>
+          <th>Colegio</th>
+          <th>Año</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let section of this._sections | async">
+        <tr>
+          <td>{{section.course}}</td>
+          <td>{{section.section}}</td>
+          <td>{{section.school}}</td>
+          <td>{{section.year}}</td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+          </td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Ver</button>
+          </td>
+        </tr>
+      </tbody>
+    
+    </table>
+  </div>
+  
+</div>
