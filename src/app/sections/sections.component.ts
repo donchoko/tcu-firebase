@@ -22,11 +22,11 @@ export class SectionsComponent implements OnInit {
         this.route.paramMap.map((params: ParamMap) =>
           this.db.list('/sections', {
             query: {
+              orderByChild:'school',
               equalTo: params.get('school')
             }
           })
         ).subscribe((sections: FirebaseListObservable<any>) => this._sections = sections);
-
       }
     });
   }
@@ -42,6 +42,13 @@ export class SectionsComponent implements OnInit {
     this.route.paramMap.map((params: ParamMap) =>
       params.get('school')
     ).subscribe((param)=> this.router.navigate(['/sections/'+param+'/create']))
+    
+  }
+
+  goStudents(section:string) {
+    this.route.paramMap.map((params: ParamMap) =>
+      params.get('school')
+    ).subscribe((param)=> this.router.navigate(['/students/'+param+'/'+section]))
     
   }
 }

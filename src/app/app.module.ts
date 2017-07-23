@@ -26,10 +26,10 @@ const appRoutes: Routes= [
   { path:'users', component:UsersComponent},
   { path:'schools', component:SchoolsComponent},
   { path:'sections/:school', component:SectionsComponent},
-  { path:'users/:school/:classroom', component:SectionsComponent},
+  { path:'students/:school/:section', component:StudentsComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
-  { path:'students/:school/:classroom/create', component:CreateUserComponent},
+  { path:'students/:school/:section/create', component:CreateStudentComponent},
   { path:'sections/:school/create', component:CreateSectionComponent},
   { path:'**', component:PageNotFoundComponent},
 ]

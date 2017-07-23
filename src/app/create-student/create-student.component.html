@@ -1,3 +1,40 @@
-<p>
-  create-student works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goStudents()">Regresar</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12">
+    <form (ngSubmit)="this.createStudent()"> 
+      <div class="form-group">
+        <label>Colegio: {{this._school?.name}}</label>
+      </div>
+      <div class="form-group">
+        <label>Sección: {{this._section?.course+' - '+this._section?.section}}</label>
+      </div>
+      <div class="form-group">
+        <label for="inputFirstName">Primer nombre</label>
+        <input class="form-control" id="inputFirstName" name="inputFirstName" placeholder="Primer nombre" [(ngModel)]="this._student.firstName">
+      </div>
+      <div class="form-group">
+        <label for="inputSecondName">Segundo nombre</label>
+        <input class="form-control" id="inputSecondName" name="inputSecondName" placeholder="Segundo nombre" [(ngModel)]="this._student.secondName">
+      </div>
+      <div class="form-group">
+        <label for="inputFirstLastName">Primer apellido</label>
+        <input class="form-control" id="inputFirstLastName" name="inputFirstLastName" placeholder="Primer apellido" [(ngModel)]="this._student.firstLastName">
+      </div>
+      <div class="form-group">
+        <label for="inputSecondLastName">Segundo apellido</label>
+        <input class="form-control" id="inputSecondLastName" name="inputSecondLastName" placeholder="Segundo apellido" [(ngModel)]="this._student.secondLastName">
+      </div>
+      <div class="form-group">
+        <label for="selectYear">Estado</label>
+        <select class="form-control" id="selectYear" name="selectYear"  [(ngModel)]="this._student.state">
+          <option *ngFor="let state of this.states" [ngValue]="state">{{state}}</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Crear</button>
+    </form>
+  </div>
+</div>

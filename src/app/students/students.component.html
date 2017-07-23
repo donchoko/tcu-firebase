@@ -1,3 +1,46 @@
-<p>
-  students works!
-</p>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goSections()">Secciones</button>
+  </div>
+  <div class="col-md-4 offset-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goCreateStudent()">Crear estudiante</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goAttendance()">Ver asistencia</button>
+  </div>
+  <div class="col-md-4 offset-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goAddAttendance()">Agregar asistencia</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12 table-responsive">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Estado</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let student of this._students | async">
+        <tr>
+          <td>{{student.firstName+' '+student.secondName}}</td>
+          <td>{{student.firstLastName+' '+student.secondLastName}}</td>
+          <td>{{student.state}}</td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+          </td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Ver</button>
+          </td>
+        </tr>
+      </tbody>
+    
+    </table>
+  </div>
+  
+</div>

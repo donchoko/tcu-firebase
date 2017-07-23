@@ -15,6 +15,8 @@
           <th>Sección</th>
           <th>Colegio</th>
           <th>Año</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody *ngFor="let section of this._sections | async">
@@ -27,7 +29,7 @@
             <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
           </td>
           <td>
-            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Ver</button>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goStudents(section.$key)">Ver</button>
           </td>
         </tr>
       </tbody>
