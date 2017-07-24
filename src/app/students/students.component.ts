@@ -44,4 +44,8 @@ export class StudentsComponent implements OnInit {
       params.get('school')
     ).subscribe((param)=> this.router.navigate(['/sections/'+param]))
   }
+
+  goProfile(studentId:string){
+    this.router.navigate(['profile/'+studentId]);
+  }
 }

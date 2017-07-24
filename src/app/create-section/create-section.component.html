@@ -21,7 +21,7 @@
 
       <div class="form-group">
         <label for="inputSection">Sección</label>
-        <input type="text" class="form-control" required minlength="2" pattern="^\d{1}-\d{2}$" id="inputSection" name="inputSection" placeholder="Sección" [(ngModel)]="this._section.section" #inputSection="ngModel">
+        <input type="text" class="form-control" required minlength="1"  id="inputSection" name="inputSection" placeholder="Sección" [(ngModel)]="this._section.section" #inputSection="ngModel">
           <div *ngIf="inputSection.errors && (inputSection.dirty || inputSection.touched)" class="alert alert-danger">
             <div [hidden]="!inputSection.errors.required">La Sección es requerido.</div>
             <div [hidden]="!inputSection.errors.minlength">Debe de tener minimo 2 digitos.</div>

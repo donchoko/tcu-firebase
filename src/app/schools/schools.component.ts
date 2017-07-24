@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-schools',
@@ -13,7 +14,7 @@ export class SchoolsComponent implements OnInit {
 
   private _schools:FirebaseListObservable<any>;
 
-  constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase) { 
+  constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase, data:DataService) { 
     this.afAuth.authState.subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);

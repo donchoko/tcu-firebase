@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goStudents()">Lista de estudiantes</button>
+  </div>
+  <div class="col-md-4 offset-md-4">
+    <button class="btn btn-lg btn-primary btn-block" (click)="this.goAddAttendance()">Agregar anotación</button>
+  </div>
+</div>
+
+<div class="row" style="margin-top:5%">
+  <h3>{{this._student?.firstName + ' ' + this._student?.firstLastName}}</h3>
+</div>
+
+<div class="row" style="margin-top:5%">
+  <h3>Anotaciones</h3>
+  <div class="col-md-12 table-responsive">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Anotación</th>
+          <th>Fecha</th>
+          <th>Creada por</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let annotation of this._annotations | async">
+        <tr>
+          <td>{{annotation.text}}</td>
+          <td>{{annotation.date}}</td>
+          <td>{{annotation.createdBy}}</td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+          </td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row" style="margin-top:5%">
+  <h3>Asistencia</h3>
+  <div class="col-md-12 table-responsive">
+    <table class="table">
+      <thead class="thead-inverse">
+        <tr>
+          <th>Fecha</th>
+          <th>Presente</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let attendance of this._attendances | async">
+        <tr>
+          <td>{{attendance.date}}</td>
+          <td>{{attendance.present}}</td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+          </td>
+          <td>
+            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

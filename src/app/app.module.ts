@@ -20,6 +20,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { CreateSectionComponent } from './create-section/create-section.component';
 import { StudentsComponent } from './students/students.component';
 import { CreateStudentComponent } from './create-student/create-student.component';
+import { ProfileComponent } from './profile/profile.component';
+import { CreateAnnotationComponent } from './create-annotation/create-annotation.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -27,6 +29,7 @@ const appRoutes: Routes= [
   { path:'schools', component:SchoolsComponent},
   { path:'sections/:school', component:SectionsComponent},
   { path:'students/:school/:section', component:StudentsComponent},
+  { path:'profile/:student', component:ProfileComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
   { path:'students/:school/:section/create', component:CreateStudentComponent},
@@ -46,7 +49,9 @@ const appRoutes: Routes= [
     PageNotFoundComponent,
     CreateSectionComponent,
     StudentsComponent,
-    CreateStudentComponent
+    CreateStudentComponent,
+    ProfileComponent,
+    CreateAnnotationComponent
   ],
   imports: [
     BrowserModule,
