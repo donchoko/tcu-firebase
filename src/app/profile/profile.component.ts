@@ -26,21 +26,21 @@ export class ProfileComponent implements OnInit {
         this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
         .subscribe((student)=> {
           this._student= student,
-          ()=>{
+          ()=>
             this._attendances = this.db.list('/attendances', {
                 query: {
                   orderByChild:'student',
                   equalTo: this._student.$key
                 }
-            });
+            }),
 
             this._annotations = this.db.list('/annotations', {
                 query: {
                   orderByChild:'student',
                   equalTo: this._student.$key
                 }
-            });
-          }
+            })
+          
         });
         
       }
@@ -49,6 +49,11 @@ export class ProfileComponent implements OnInit {
 
   goStudents() {
     this.router.navigate(['/students/'+this._student.school+'/'+this._student.section]);
+  }
+
+  goCreateAnnotation(){
+    //annotation/create/:student
+    this.router.navigate(['/annotation/create/'+this.route.snapshot.paramMap.get('student')]);
   }
 
   ngOnInit() {

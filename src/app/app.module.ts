@@ -34,6 +34,7 @@ const appRoutes: Routes= [
   { path:'users/create', component:CreateUserComponent},
   { path:'students/:school/:section/create', component:CreateStudentComponent},
   { path:'sections/:school/create', component:CreateSectionComponent},
+  { path:'annotation/create/:student', component:CreateAnnotationComponent},
   { path:'**', component:PageNotFoundComponent},
 ]
 
