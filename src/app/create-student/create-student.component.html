@@ -5,36 +5,63 @@
 </div>
 <div class="row" style="margin-top:5%">
   <div class="col-md-12">
-    <form (ngSubmit)="this.createStudent()"> 
+
+    <form #registroEstudiante="ngForm" (ngSubmit)="this.createStudent()"> 
+      <h2 align="right" >Registro de estudiantes</h2>
       <div class="form-group">
         <label>Colegio: {{this._school?.name}}</label>
       </div>
       <div class="form-group">
         <label>Sección: {{this._section?.course+' - '+this._section?.section}}</label>
       </div>
+
       <div class="form-group">
         <label for="inputFirstName">Primer nombre</label>
-        <input class="form-control" id="inputFirstName" name="inputFirstName" placeholder="Primer nombre" [(ngModel)]="this._student.firstName">
+        <input type="text" class="form-control" id="inputFirstName" name="inputFirstName" required minlength="4" maxlength="50" placeholder="Primer nombre" [(ngModel)]="this._student.firstName" #inputFirstName="ngModel">
+            <div *ngIf="inputFirstName.errors && (inputFirstName.dirty || inputFirstName.touched)" class="alert alert-danger">
+            <div [hidden]="!inputFirstName.errors.required">El primer nombre es requerido.</div>
+            <div [hidden]="!inputFirstName.errors.minlength">Debe de tener minimo 2 digitos.</div>
+            <div [hidden]="!inputFirstName.errors.maxlength">Dede de tener maximo 50 digitos </div>         
       </div>
+      </div>
+
       <div class="form-group">
         <label for="inputSecondName">Segundo nombre</label>
-        <input class="form-control" id="inputSecondName" name="inputSecondName" placeholder="Segundo nombre" [(ngModel)]="this._student.secondName">
+        <input type="text" class="form-control" id="inputSecondName" name="inputSecondName" required minlength="4" maxlength="50" placeholder="Segundo nombre" [(ngModel)]="this._student.secondName" #inputSecondName="ngModel">
+          <div *ngIf="inputSecondName.errors && (inputSecondName.dirty || inputSecondName.touched)" class="alert alert-danger">
+            <div [hidden]="!inputSecondName.errors.required">El segundo nombre es requerido.</div>
+            <div [hidden]="!inputSecondName.errors.minlength">Debe de tener minimo 2 digitos.</div>
+            <div [hidden]="!inputSecondName.errors.maxlength">Dede de tener maximo 50 digitos </div>         
+      </div>
       </div>
       <div class="form-group">
         <label for="inputFirstLastName">Primer apellido</label>
-        <input class="form-control" id="inputFirstLastName" name="inputFirstLastName" placeholder="Primer apellido" [(ngModel)]="this._student.firstLastName">
+        <input class="form-control" id="inputFirstLastName" name="inputFirstLastName" required minlength="4" maxlength="50" placeholder="Primer apellido" [(ngModel)]="this._student.firstLastName" #inputFirstLastName="ngModel" >
+         <div *ngIf="inputFirstLastName.errors && (inputFirstLastName.dirty || inputFirstLastName.touched)" class="alert alert-danger">
+            <div [hidden]="!inputFirstLastName.errors.required">El primer apellido es requerido.</div>
+            <div [hidden]="!inputFirstLastName.errors.minlength">Debe de tener minimo 2 digitos.</div>
+            <div [hidden]="!inputFirstLastName.errors.maxlength">Dede de tener maximo 50 digitos </div>         
+      </div>
       </div>
       <div class="form-group">
         <label for="inputSecondLastName">Segundo apellido</label>
-        <input class="form-control" id="inputSecondLastName" name="inputSecondLastName" placeholder="Segundo apellido" [(ngModel)]="this._student.secondLastName">
+        <input  type="text" class="form-control" id="inputSecondLastName" name="inputSecondLastName" required minlength="4" maxlength="50" placeholder="Segundo apellido" [(ngModel)]="this._student.secondLastName" #inputSecondLastName="ngModel">
+          <div *ngIf="inputSecondLastName.errors && (inputSecondLastName.dirty || inputSecondLastName.touched)" class="alert alert-danger">
+            <div [hidden]="!inputSecondLastName.errors.required">El segundo apellido es requerido.</div>
+            <div [hidden]="!inputSecondLastName.errors.minlength">Debe de tener minimo 2 digitos.</div>
+            <div [hidden]="!inputSecondLastName.errors.maxlength">Dede de tener maximo 50 digitos </div>         
+      </div>    
       </div>
       <div class="form-group">
-        <label for="selectYear">Estado</label>
-        <select class="form-control" id="selectYear" name="selectYear"  [(ngModel)]="this._student.state">
+        <label for="selectEstado">Estado</label>
+        <select class="form-control" id="selectEstado" required name="selectEstado"  [(ngModel)]="this._student.state" #selectEstado="ngModel">
           <option *ngFor="let state of this.states" [ngValue]="state">{{state}}</option>
         </select>
+            <div *ngIf="selectEstado.errors && selectEstado.touched" class="alert alert-danger">
+            <div [hidden]="!selectEstado.errors.required">El estado es requerido</div>
+            </div>
       </div>
-      <button type="submit" class="btn btn-primary">Crear</button>
+      <button type="submit" class="btn btn-primary" [disabled] ="!registroEstudiante.form.valid">Crear</button>
     </form>
   </div>
 </div>
