@@ -23,9 +23,10 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
-        this._student=this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
+        this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
         .subscribe(
           (student)=> {
+            this._student = student
             this._attendances = this.db.list('/attendances', {
                 query: {
                   orderByChild:'student',
