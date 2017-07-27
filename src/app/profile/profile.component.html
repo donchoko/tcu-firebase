@@ -20,6 +20,8 @@
           <th>Anotación</th>
           <th>Fecha</th>
           <th>Creada por</th>
+          <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody *ngFor="let annotation of this._annotations | async">
@@ -52,13 +54,7 @@
       <tbody *ngFor="let attendance of this._attendances | async">
         <tr>
           <td>{{attendance.date}}</td>
-          <td>{{attendance.present}}</td>
-          <td>
-            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
-          </td>
-          <td>
-            <button class="btn btn-lg btn-info btn-block" (click)="this.goClassrooms()">Eliminar</button>
-          </td>
+          <td>{{attendance.attended}}</td>
         </tr>
       </tbody>
     </table>

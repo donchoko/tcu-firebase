@@ -6,6 +6,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment } from 'environments/environment';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from "@angular/router";
@@ -22,6 +23,8 @@ import { StudentsComponent } from './students/students.component';
 import { CreateStudentComponent } from './create-student/create-student.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CreateAnnotationComponent } from './create-annotation/create-annotation.component';
+import { ChooseDateComponent } from './choose-date/choose-date.component';
+import { CreateAttendanceComponent } from './create-attendance/create-attendance.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -35,6 +38,7 @@ const appRoutes: Routes= [
   { path:'students/:school/:section/create', component:CreateStudentComponent},
   { path:'sections/:school/create', component:CreateSectionComponent},
   { path:'annotation/create/:student', component:CreateAnnotationComponent},
+  { path:'attendance/:section/create', component:CreateAttendanceComponent},
   { path:'**', component:PageNotFoundComponent},
 ]
 
@@ -52,7 +56,9 @@ const appRoutes: Routes= [
     StudentsComponent,
     CreateStudentComponent,
     ProfileComponent,
-    CreateAnnotationComponent
+    CreateAnnotationComponent,
+    ChooseDateComponent,
+    CreateAttendanceComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +68,7 @@ const appRoutes: Routes= [
       appRoutes,
       {enableTracing: false}
     ),
+    NgbModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,

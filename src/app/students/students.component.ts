@@ -22,8 +22,8 @@ export class StudentsComponent implements OnInit {
         this.route.paramMap.map((params: ParamMap) =>
           this.db.list('/students', {
             query: {
-              orderByChild:'school',
-              equalTo: params.get('school')
+              orderByChild:'section',
+              equalTo: params.get('section')
             }
           })
         ).subscribe((sections: FirebaseListObservable<any>) => this._students = sections);
@@ -32,6 +32,10 @@ export class StudentsComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  goCreateAttendance(){
+    this.router.navigate(['/attendance/'+this.route.snapshot.paramMap.get('section')+'/create']);
   }
 
 
