@@ -34,6 +34,10 @@ export class StudentsComponent implements OnInit {
   ngOnInit() {
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   goCreateAttendance(){
     this.router.navigate(['/attendance/'+this.route.snapshot.paramMap.get('section')+'/create']);
   }

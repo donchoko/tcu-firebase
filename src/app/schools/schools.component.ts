@@ -25,6 +25,9 @@ export class SchoolsComponent implements OnInit {
     });
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
 
 
   ngOnInit() {

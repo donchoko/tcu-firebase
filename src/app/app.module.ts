@@ -25,6 +25,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { CreateAnnotationComponent } from './create-annotation/create-annotation.component';
 import { ChooseDateComponent } from './choose-date/choose-date.component';
 import { CreateAttendanceComponent } from './create-attendance/create-attendance.component';
+import { EditAttendanceComponent } from './edit-attendance/edit-attendance.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -58,7 +59,8 @@ const appRoutes: Routes= [
     ProfileComponent,
     CreateAnnotationComponent,
     ChooseDateComponent,
-    CreateAttendanceComponent
+    CreateAttendanceComponent,
+    EditAttendanceComponent
   ],
   imports: [
     BrowserModule,

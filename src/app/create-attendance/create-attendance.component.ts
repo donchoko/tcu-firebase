@@ -56,13 +56,32 @@ export class CreateAttendanceComponent implements OnInit {
     if(this._dateModel){
       this._date = new Date(this._dateModel.year,this._dateModel.month,this._dateModel.day).getTime();
       if(this._attendances.length>0){
-        for(let a of this._attendances){
-          a.date = this._date;
-          this.db.list('/attendances').push(a);
-        }
-        this.goStudents();
+        this.db.list('/attendances',{
+          query: {
+            orderByChild:'date',
+            equalTo: this._date
+          }
+        }).subscribe((list)=>{
+          console.log(list)
+          if(list.length==0){
+            for(let a of this._attendances){
+              a.date = this._date;
+              this.db.list('/attendances').push(a);
+            }
+            this.goStudents();
+          }
+          else{
+            //YA EXISTE ERROR AQUI
+          }
+          
+        });
+        
       }
     }
+  }
+
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
   }
 
   selectAll(){

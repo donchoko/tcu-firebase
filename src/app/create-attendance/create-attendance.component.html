@@ -1,3 +1,6 @@
+<div class="offset-md-8 col-md-4">
+  <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+</div>
 <div class="row">
   <div class="col-md-4">
     <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Regresar</button>
@@ -19,12 +22,16 @@
           <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectNone()">Ninguno</button></div>
           <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectAll()">Todos</button></div>
       </div>
-      <div *ngFor="let student of this._attendances"> 
-        <div class="form-check form-check-inline">
-          <label class="form-check-label">
-              <input type="checkbox" class="form-check-input" name="student.name" [(ngModel)]="student.attended">
-              <span>{{student.name}}</span>
-          </label>
+      <div class="row">
+        <div class="col-12">
+          <div *ngFor="let student of this._attendances"> 
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="student.attended">
+                  <span class="checkboxLabel">{{student.name}}</span>
+              </label>
+            </div>
+          </div>
         </div>
       </div>
       <div style="margin-top: 10%;">

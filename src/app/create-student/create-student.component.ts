@@ -67,6 +67,10 @@ export class CreateStudentComponent implements OnInit {
     });
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   ngOnInit() {
     
   }

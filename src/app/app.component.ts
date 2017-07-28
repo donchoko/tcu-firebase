@@ -7,9 +7,13 @@ import { AngularFireAuth } from 'angularfire2/auth';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+    private loggedIn:boolean;
+
     constructor(private afAuth: AngularFireAuth) { 
 
     }
+
 
   
 }

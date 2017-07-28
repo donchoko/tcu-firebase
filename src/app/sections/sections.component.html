@@ -1,9 +1,14 @@
+<div class="row signOutRow">
+    <div class="offset-md-8 col-md-4">
+      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+    </div>
+</div>
 <div class="row">
   <div class="col-md-4">
-    <button class="btn btn-lg btn-primary btn-block" (click)="this.goSchools()">Colegios</button>
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goSchools()">Colegios</button>
   </div>
   <div class="col-md-4 offset-md-4">
-    <button class="btn btn-lg btn-primary btn-block" (click)="this.goCreateSection()">Crear sección</button>
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goCreateSection()">Crear sección</button>
   </div>
 </div>
 <div class="row" style="margin-top:5%">
@@ -26,10 +31,10 @@
           <td>{{section.school}}</td>
           <td>{{section.year}}</td>
           <td>
-            <button class="btn btn-lg btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+            <button class="btn btn-info btn-block" (click)="this.goEditSection()">Editar</button>
           </td>
           <td>
-            <button class="btn btn-lg btn-info btn-block" (click)="this.goStudents(section.$key)">Ver</button>
+            <button class="btn btn-info btn-block" (click)="this.goStudents(section.$key)">Ver</button>
           </td>
         </tr>
       </tbody>

@@ -1,14 +1,18 @@
 
-<div class="row">
-      
+<div class="row signOutRow">
+    <div class="offset-md-8 col-md-4">
+      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+    </div>
+</div>
+<div class="row"> 
   <div class="col-md-4">
-    <button class="btn btn-lg btn-primary btn-block" (click)="this.goSchools()">Regresar</button>
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goSchools()">Regresar</button>
   </div>
 </div>
 <div class="row" style="margin-top:5%">
   <div class="col-md-12">
     <form #registroColegio="ngForm"   (ngSubmit)="this.createSchool()"> 
-      <h2 align="right">Formulario de registro de colegio</h2>
+      <h2 align="right">Crear colegio</h2>
       <div class="form-group">
         <label for="inputName">Nombre</label>
         <input type="text" class="form-control" required minlength="4" maxlength="100" id="inputName" name="inputName" placeholder="Nombre" [(ngModel)]="this._school.name" #inputName="ngModel">

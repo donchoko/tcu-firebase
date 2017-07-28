@@ -61,6 +61,10 @@ export class CreateSectionComponent implements OnInit {
     });
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   goSections(){
     this.route.paramMap.map((params: ParamMap) =>
       params.get('school')

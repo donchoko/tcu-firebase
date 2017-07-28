@@ -32,6 +32,10 @@ export class CreateSchoolComponent implements OnInit {
     });
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   goSchools(){
     this.router.navigate(['/schools']);
   }

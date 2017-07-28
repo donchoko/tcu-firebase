@@ -34,6 +34,10 @@ export class SectionsComponent implements OnInit {
   ngOnInit() {
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   goSchools() {
     this.router.navigate(['/schools']);
   }

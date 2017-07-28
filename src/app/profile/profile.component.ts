@@ -47,6 +47,10 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  signOut(){
+    this.afAuth.auth.signOut().then(()=>this.router.navigate(['']));
+  }
+
   goStudents() {
     this.router.navigate(['/students/'+this._student.school+'/'+this._student.section]);
   }
