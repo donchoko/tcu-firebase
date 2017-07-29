@@ -54,7 +54,7 @@ export class CreateAttendanceComponent implements OnInit {
 
   createAttendance(){
     if(this._dateModel){
-      this._date = new Date(this._dateModel.year,this._dateModel.month,this._dateModel.day).getTime();
+      this._date = new Date(this._dateModel.year,this._dateModel.month-1,this._dateModel.day).getTime();
       if(this._attendances.length>0){
         this.db.list('/attendances',{
           query: {
@@ -71,7 +71,7 @@ export class CreateAttendanceComponent implements OnInit {
             this.goStudents();
           }
           else{
-            //YA EXISTE ERROR AQUI
+            //YA EXISTE ASISTENCIA ERROR AQUI
           }
           
         });

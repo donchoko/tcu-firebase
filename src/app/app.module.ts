@@ -36,6 +36,8 @@ const appRoutes: Routes= [
   { path:'profile/:student', component:ProfileComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
+  { path:'attendance/:section/date', component:ChooseDateComponent},
+  { path:'attendance/:section/:date/edit', component:EditAttendanceComponent},
   { path:'students/:school/:section/create', component:CreateStudentComponent},
   { path:'sections/:school/create', component:CreateSectionComponent},
   { path:'annotation/create/:student', component:CreateAnnotationComponent},

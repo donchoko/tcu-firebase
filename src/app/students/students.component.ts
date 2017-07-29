@@ -56,4 +56,8 @@ export class StudentsComponent implements OnInit {
   goProfile(studentId:string){
     this.router.navigate(['profile/'+studentId]);
   }
+
+  goChooseDate(){
+    this.router.navigate(['/attendance/'+this.route.snapshot.paramMap.get('section')+'/date']);
+  }
 }

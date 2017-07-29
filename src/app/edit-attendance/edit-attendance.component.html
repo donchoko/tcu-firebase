@@ -1,3 +1,48 @@
-<p>
-  edit-attendance works!
-</p>
+<div class="offset-md-8 col-md-4">
+  <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Regresar</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12">
+    <form #formAttendance="ngForm" (ngSubmit)="this.createAttendance()">
+      <div class="form-group row" style="margin-top: 10%; margin-bottom:10%">
+        <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectNone()">Ninguno</button></div>
+        <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectAll()">Todos</button></div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h3>Estudiantes en lista</h3>
+          <div *ngFor="let student of this._attendances">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="student.attended">
+                    <span class="checkboxLabel">{{student.name}}</span>
+                </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12" style="margin-top:5%" *ngIf="this._new_students.length>0">
+          <h3>Estudiantes no listados</h3>
+          <div *ngFor="let student of this._new_students">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                      <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="student.attended">
+                      <span class="checkboxLabel">{{student.name}}</span>
+                  </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 10%;">
+        <button type="submit" class="btn btn-primary">Crear</button>
+      </div>
+    </form>
+
+  </div>
+</div>

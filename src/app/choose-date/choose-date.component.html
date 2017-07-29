@@ -1,3 +1,28 @@
-<p>
-  choose-date works!
-</p>
+<div class="row">
+  <div class="offset-md-8 col-md-4">
+    <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Regresar</button>
+  </div>
+</div>
+<div class="row" style="margin-top:5%">
+  <div class="col-md-12">
+    <form #formAttendance="ngForm" (ngSubmit)="this.goEditDate()"> 
+      <div class="form-group">
+        <label for="pickDate">
+          <span>Fecha:</span>
+          <span *ngIf="this._dateModel"> {{this._dateModel?.day + '/' + this._dateModel?.month + '/' + this._dateModel?.year}}</span>
+        </label>
+        <div class="input-group">
+          <ngb-datepicker #dp name="pickDate" [(ngModel)]="this._dateModel"></ngb-datepicker>
+        </div>
+      </div>
+      <div style="margin-top: 10%;">
+        <button type="submit" class="btn btn-primary" [disabled]="!this._dateModel">Crear</button>
+        </div>
+    </form>  
+  </div>
+</div>
