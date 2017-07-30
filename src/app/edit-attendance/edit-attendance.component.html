@@ -19,7 +19,7 @@
           <div *ngFor="let student of this._attendances">
             <div class="form-check form-check-inline">
               <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="student.attended">
+                    <input type="checkbox" class="form-check-input float-right" [name]="student.name" [(ngModel)]="student.attended">
                     <span class="checkboxLabel">{{student.name}}</span>
                 </label>
             </div>
@@ -29,11 +29,11 @@
       <div class="row">
         <div class="col-12" style="margin-top:5%" *ngIf="this._new_students.length>0">
           <h3>Estudiantes no listados</h3>
-          <div *ngFor="let student of this._new_students">
+          <div *ngFor="let neWstudent of this._new_students">
             <div class="form-check form-check-inline">
               <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="student.attended">
-                      <span class="checkboxLabel">{{student.name}}</span>
+                      <input type="checkbox" class="form-check-input float-right" name="student.name" [(ngModel)]="neWstudent.attended">
+                      <span class="checkboxLabel">{{neWstudent.name}}</span>
                   </label>
             </div>
           </div>

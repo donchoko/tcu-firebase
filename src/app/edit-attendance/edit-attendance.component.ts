@@ -38,7 +38,7 @@ export class EditAttendanceComponent implements OnInit {
         }).subscribe((attendances) => {
           if (attendances) {
             this._attendances = attendances;
-
+            console.log(this._attendances);
             this.db.list('/students', {
               query: {
                 orderByChild: 'section',
@@ -64,6 +64,7 @@ export class EditAttendanceComponent implements OnInit {
 
   createAttendance() {
     for (let a of this._attendances) {
+      console.log(a.$key);
       this.db.object('/attendances/' + a.$key).update(a);
     }
 

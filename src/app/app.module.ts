@@ -26,6 +26,7 @@ import { CreateAnnotationComponent } from './create-annotation/create-annotation
 import { ChooseDateComponent } from './choose-date/choose-date.component';
 import { CreateAttendanceComponent } from './create-attendance/create-attendance.component';
 import { EditAttendanceComponent } from './edit-attendance/edit-attendance.component';
+import { SectionReportComponent } from './section-report/section-report.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -33,6 +34,7 @@ const appRoutes: Routes= [
   { path:'schools', component:SchoolsComponent},
   { path:'sections/:school', component:SectionsComponent},
   { path:'students/:school/:section', component:StudentsComponent},
+  { path:'students/:school/:section/report', component:SectionReportComponent},
   { path:'profile/:student', component:ProfileComponent},
   { path:'schools/create', component:CreateSchoolComponent},
   { path:'users/create', component:CreateUserComponent},
@@ -62,7 +64,8 @@ const appRoutes: Routes= [
     CreateAnnotationComponent,
     ChooseDateComponent,
     CreateAttendanceComponent,
-    EditAttendanceComponent
+    EditAttendanceComponent,
+    SectionReportComponent
   ],
   imports: [
     BrowserModule,

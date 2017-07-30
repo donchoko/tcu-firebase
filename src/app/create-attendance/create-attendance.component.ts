@@ -43,7 +43,8 @@ export class CreateAttendanceComponent implements OnInit {
                 name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName,
                 student: student.$key,
                 date:this._date,
-                attended: true
+                attended: true,
+                section: this.route.snapshot.paramMap.get('section')
               })
             })
           } 
@@ -58,20 +59,21 @@ export class CreateAttendanceComponent implements OnInit {
       if(this._attendances.length>0){
         this.db.list('/attendances',{
           query: {
-            orderByChild:'date',
-            equalTo: this._date
+            orderByChild:'section',
+            equalTo: this.route.snapshot.paramMap.get('section')
           }
         }).subscribe((list)=>{
-          console.log(list)
-          if(list.length==0){
+          console.log(list);
+          if(list.some( element => element.date == this._date)){
+            console.log("YA EXISTE");
+          }
+          else{
+            console.log("NO EXISTE")
             for(let a of this._attendances){
               a.date = this._date;
               this.db.list('/attendances').push(a);
             }
             this.goStudents();
-          }
-          else{
-            //YA EXISTE ASISTENCIA ERROR AQUI
           }
           
         });

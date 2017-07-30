@@ -26,7 +26,7 @@ export class StudentsComponent implements OnInit {
               equalTo: params.get('section')
             }
           })
-        ).subscribe((sections: FirebaseListObservable<any>) => this._students = sections);
+        ).subscribe((students: FirebaseListObservable<any>) => this._students = students);
       }
     });
   }
@@ -55,6 +55,10 @@ export class StudentsComponent implements OnInit {
 
   goProfile(studentId:string){
     this.router.navigate(['profile/'+studentId]);
+  }
+
+  goReport(){
+    this.router.navigate(['students/'+this.route.snapshot.paramMap.get('school')+'/'+this.route.snapshot.paramMap.get('section')+'/report'])
   }
 
   goChooseDate(){

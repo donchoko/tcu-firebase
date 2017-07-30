@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="offset-md-8 col-md-4 mb-4">
+      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+    </div>
+</div>
+<div class="row">
+  <div class="col-md-4 col mb-4">
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Lista de estudiantes</button>
+  </div>
+  <div class="col-md-4 offset-md-4 mb-4">
+    <button class="btn btn-md btn-primary btn-block" (click)="this.downloadReport()">Descargar reporte</button>
+  </div>
+</div>
+
+<div class="row" style="margin-top:5%">
+  <div class="col-12">
+    <h3>{{'Reporte de sección: '+ this._section?.course + ' - ' + this._section?.section}}</h3>
+  </div>
+</div>
+
+<div class="row" style="margin-top:5%">
+  <div class="col-12 mb-4">
+    <h3>Resumen de estados</h3>
+    <div class="col-md-12 table-responsive">
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Estado</th>
+            <th>Número de estudiantes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+                {{this._states[0].name}}
+            </td>
+            <td>{{this._states[0].amount}}</td>
+          </tr>
+          <tr>
+            <td>
+                {{this._states[1].name}}
+            </td>
+            <td>{{this._states[1].amount}}</td>
+          </tr>
+          <tr>
+            <td>
+                {{this._states[2].name}}
+            </td>
+            <td>{{this._states[2].amount}}</td>
+          </tr>
+          <tr>
+            <td>
+                {{this._states[3].name}}
+            </td>
+            <td>{{this._states[3].amount}}</td>
+          </tr>
+          <tr>
+            <td>
+                {{this._states[4].name}}
+            </td>
+            <td>{{this._states[4].amount}}</td>
+          </tr>
+          <tr>
+            <td>
+                <b>{{this._states[5].name}}</b>
+            </td>
+            <td><b>{{this._states[5].amount}}</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <h3>Estado de estudiantes</h3>
+    <div class="col-md-12 table-responsive">
+      <table class="table">
+        <thead class="thead-inverse">
+          <tr>
+            <th>Estudiante</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let student of this._students">
+          <tr>
+            <td>{{student?.firstName +' '+ student?.secondName+' '+ student?.firstLastName+' '+ student?.secondLastName}}</td>
+            <td>{{student?.state}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
