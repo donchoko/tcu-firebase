@@ -8,7 +8,7 @@
     <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Lista de estudiantes</button>
   </div>
   <div class="col-md-4 offset-md-4 mb-4">
-    <button class="btn btn-md btn-primary btn-block" (click)="this.downloadReport()">Descargar reporte</button>
+    <button [disabled]="!this._students" class="btn btn-md btn-primary btn-block" (click)="this.downloadReport()">Descargar reporte</button>
   </div>
 </div>
 
@@ -85,7 +85,7 @@
         </thead>
         <tbody *ngFor="let student of this._students">
           <tr>
-            <td>{{student?.firstName +' '+ student?.secondName+' '+ student?.firstLastName+' '+ student?.secondLastName}}</td>
+            <td>{{student?.name}}</td>
             <td>{{student?.state}}</td>
           </tr>
         </tbody>

@@ -65,7 +65,7 @@ export class SectionReportComponent implements OnInit {
           .subscribe((section)=>{
             this._section = section
             this._date = new Date();
-            this._filename = section.course+"-"+section.section+"-"+this._date.getDate()+'/'+this._date.getMonth()+'/'+this._date.getFullYear();
+            this._filename = section.course+"-"+section.section+"-"+this._date.getDate()+'/'+this._date.getMonth()+'/'+this._date.getFullYear()+'.xlsx';
         });
 
         this.db.list('/students', {
@@ -74,9 +74,14 @@ export class SectionReportComponent implements OnInit {
               equalTo: this.route.snapshot.paramMap.get('section')
             }
         }).subscribe((students) =>{
-          this._students = students;
+          this._students = [];
           
           students.forEach(element => {
+            this._students.push({
+              name: element.firstName +' '+ element.secondName+' '+ element.firstLastName+' '+ element.secondLastName,
+              state: element.state
+            })
+
             if(element.state == "Activo"){
               this._states[0].amount++;
             }
@@ -130,11 +135,38 @@ export class SectionReportComponent implements OnInit {
     console.log("DESCARGANDO!");
     if(this._students && this._states){
       let wb = XLSX.utils.book_new();
+      /*XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._states),'Resumen');
+      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._students),'Estudiantes');*/
 
-      let json_states= JSON.stringify(this._states);
-      let json_students = JSON.stringify(this._students);
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._states));
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._students));
+      let secondTableStart = this._states.length+4
+      let refIndex= "A1:B"+(secondTableStart+this._students.length);
+
+      let resumen = {
+        "!ref":refIndex
+      }
+
+      resumen['A1'] = {t:"s", v:"Estado"};
+      resumen['B1'] = {t:"s", v:"Estudiantes"};
+      for(let i=0; i<this._states.length; i++){
+        let index_a = 'A'+(i+2);
+        let index_b = 'B'+(i+2);
+        resumen[index_a] = {t:"s", v:this._states[i].name};
+        resumen[index_b] = {t:"n", v:this._states[i].amount};
+      }
+
+      resumen['A'+secondTableStart] = {t:"s", v:"Nombre"};
+      resumen['B'+secondTableStart] = {t:"s", v:"Estado"};
+
+      for(let i=0; i<this._students.length; i++){
+        let index_a = 'A'+(secondTableStart+i+1);
+        let index_b = 'B'+(secondTableStart+i+1);
+        resumen[index_a] = {t:"s", v:this._students[i].name};
+        resumen[index_b] = {t:"n", v:this._students[i].state};
+      }
+
+      XLSX.utils.book_append_sheet(wb,resumen,'Resumen');
+
+      console.log(wb.Sheets['Resumen']);
       const wbout = XLSX.write(wb,this.wopt);
       saveAs(new Blob([this.s2ab(wbout)]), this._filename);
     }
