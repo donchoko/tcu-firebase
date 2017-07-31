@@ -6,6 +6,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 import {saveAs} from 'file-saver';
 import * as XLSX from 'xlsx'; 
+import * as XlsxPopulate from 'xlsx-populate';
  
 @Component({
   selector: 'app-section-report',
@@ -131,13 +132,169 @@ export class SectionReportComponent implements OnInit {
     return buf;
   }
 
+  altDownloadReport(){
+    if(this._students && this._states){
+      XlsxPopulate.fromBlankAsync().then(workbook =>{
+        let secondTableStart = this._states.length+4
+        console.log(workbook);
+
+        //Rangos de la tablas
+        let rangeFirstTable= "A1:B"+(this._states.length+1);
+        let rangeSecondTable= "A"+secondTableStart +":B"+(secondTableStart+this._students.length);
+        
+        //Agregando borde a la primera tabla
+        workbook.sheet(0).range(rangeFirstTable).style({
+          leftBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          rightBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          topBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          bottomBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+        });
+
+        //Agregando borde a la segunda tabla
+        workbook.sheet(0).range(rangeSecondTable).style({
+          leftBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          rightBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          topBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+          bottomBorder:{
+            style:'thin',
+            color:{
+              rgb:'000000'
+            }
+          },
+        });
+        
+        //Ancho de la columnas
+        workbook.sheet(0).column("A").width(40);
+        workbook.sheet(0).column("B").width(25);
+
+        //Headers de la primera tabla
+        workbook.sheet(0).cell("A1").value("Estado");
+        workbook.sheet(0).cell("A1").style({
+          bold:true, 
+          fill:{
+            type:'solid',
+            color:{
+              rgb:'c0c0c0'
+            }
+          }
+        });
+
+        workbook.sheet(0).cell("B1").value("Estudiantes");
+        workbook.sheet(0).cell("B1").style({
+          bold:true, 
+          fill:{
+            type:'solid',
+            color:{
+              rgb:'c0c0c0'
+            }
+          }
+        });
+
+        //Ciclo para agregar el contenido de la tabla
+        for(let i=0; i<this._states.length; i++){
+
+          //Indices de cada celda. El indice del arreglo más 2 contando que
+          //la celda de header y que el arreglo empieza en 0 pero la tabla no.
+          let index_a = 'A'+(i+2);
+          let index_b = 'B'+(i+2);
+
+          if(this._states[i].name== "Total"){
+            workbook.sheet(0).cell(index_a).value(this._states[i].name).style("bold",true);
+            workbook.sheet(0).cell(index_b).value(this._states[i].amount).style("bold",true);  
+          }
+          else{
+            workbook.sheet(0).cell(index_a).value(this._states[i].name);
+            workbook.sheet(0).cell(index_b).value(this._states[i].amount);
+          }
+        }
+
+        //Headers de la segunda tabla
+        workbook.sheet(0).cell("A"+secondTableStart).value("Nombre");
+        workbook.sheet(0).cell("B"+secondTableStart).value("Estado");
+
+        workbook.sheet(0).cell("A"+secondTableStart).style({
+          bold:true, 
+          fill:{
+            type:'solid',
+            color:{
+              rgb:'c0c0c0'
+            }
+          }
+        });
+        workbook.sheet(0).cell("B"+secondTableStart).style({
+          bold:true, 
+          fill:{
+            type:'solid',
+            color:{
+              rgb:'c0c0c0'
+            }
+          }
+        });
+
+        //Ciclo para agregar contenido de la segunta tabla
+        for(let i=0; i<this._students.length; i++){
+          //Indices de cada celda. El indice del arreglo más 2 contando que
+          //la celda de header y que el arreglo empieza en 0 pero la tabla no.
+          //más una separación de tres celdas entre cada tabla.
+          let index_a = 'A'+(secondTableStart+i+1);
+          let index_b = 'B'+(secondTableStart+i+1);
+
+          workbook.sheet(0).cell(index_a).value(this._students[i].name);
+          workbook.sheet(0).cell(index_b).value(this._students[i].state);
+        }
+
+        //Exportando como blob y usando saveAs para descargarlo
+        workbook.outputAsync().then((blob)=>{
+          saveAs(blob, this._filename);
+        });
+        
+      });
+      
+    }
+  }
+
+  //ESTE METODO QUEDA EN CASO QUE EL METODO DE DESCARGA DEJE DE FUNCIONAR
+  //COMO ALTERNATIVA
   downloadReport(){
     console.log("DESCARGANDO!");
     if(this._students && this._states){
       let wb = XLSX.utils.book_new();
-      /*XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._states),'Resumen');
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(this._students),'Estudiantes');*/
-
+      
       let secondTableStart = this._states.length+4
       let refIndex= "A1:B"+(secondTableStart+this._students.length);
 
@@ -145,8 +302,8 @@ export class SectionReportComponent implements OnInit {
         "!ref":refIndex
       }
 
-      resumen['A1'] = {t:"s", v:"Estado"};
-      resumen['B1'] = {t:"s", v:"Estudiantes"};
+      resumen['A1'] = {t:"s", v:"Estado", s:{font:{bold:true}}};
+      resumen['B1'] = {t:"s", v:"Estudiantes", s:{font:{bold:true}}};
       for(let i=0; i<this._states.length; i++){
         let index_a = 'A'+(i+2);
         let index_b = 'B'+(i+2);
