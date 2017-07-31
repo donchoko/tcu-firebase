@@ -1,23 +1,31 @@
-<form (ngSubmit)="this.createUser()"> 
+<div class="row">
+  <div class="col-md-4">
+    <button class="btn btn-primary btn-block" (click)="this.goUsers()">Usuarios</button>
+  </div>
+</div>
+<form class="mt-5" (ngSubmit)="this.createUser()">
   <div class="form-group">
     <label for="inputEmail1">Nombre</label>
-    <input type="email" class="form-control" id="inputName" name="inputName" aria-describedby="nameHelp" placeholder="Nombre" [(ngModel)]="this._user.name">
+    <input type="email" class="form-control" id="inputName" name="inputName" aria-describedby="nameHelp" placeholder="Nombre"
+      [(ngModel)]="this._user.name">
   </div>
   <div class="form-group">
     <label for="inputEmail1">Apellido</label>
-    <input type="email" class="form-control" id="inputLastName" name="inputEmail1" aria-describedby="lastNameHelp" placeholder="Apellido" [(ngModel)]="this._user.lastName">
+    <input type="email" class="form-control" id="inputLastName" name="inputEmail1" aria-describedby="lastNameHelp" placeholder="Apellido"
+      [(ngModel)]="this._user.lastName">
   </div>
   <div class="form-group">
     <label for="inputEmail1">Email</label>
-    <input type="email" class="form-control" id="inputEmail1" name="inputEmail1" aria-describedby="emailHelp" placeholder="Email" [(ngModel)]="this._user.email">
+    <input type="email" class="form-control" id="inputEmail1" name="inputEmail1" aria-describedby="emailHelp" placeholder="Email"
+      [(ngModel)]="this._user.email">
   </div>
   <div class="form-group">
-    <label for="inputPassword">Password</label> 
-    <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Password"  [(ngModel)]="this._user.pass">
+    <label for="inputPassword">Password</label>
+    <input type="password" class="form-control" id="inputPassword" name="inputPassword" placeholder="Password" [(ngModel)]="this._user.pass">
   </div>
   <div class="form-group">
     <label for="selectType">Rol</label>
-    <select class="form-control" id="selectType" name="selectType"  [(ngModel)]="this._user.type">
+    <select class="form-control" id="selectType" name="selectType" [(ngModel)]="this._user.type">
       <option *ngFor="let role of roles" [ngValue]="role.value">{{role.name}}</option>
     </select>
   </div>

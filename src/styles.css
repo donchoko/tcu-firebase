@@ -2,3 +2,38 @@
 .signOutRow{
     margin-bottom:5%
 }
+
+.btn-primary {
+    color: #FFFFFF;
+    background-color: #000000;
+    border-color: #000000;
+   
+}
+
+.btn-primary:hover{
+    color: #000000;
+    background-color: #FDD12F;
+    border-color: #000000;
+   
+}
+.btn-primary:disabled{
+    color: #000000;
+    background-color: #FDD12F;
+    border-color: #000000;
+   
+}
+.btn-info{
+    color: #000000;
+    background-color: #FDD12F;
+    border-color: #FDD12F;
+}
+.btn-info:hover{
+    color: #000000;
+    background-color: #FDD12F;
+    border-color: #000000;
+}
+.thead-inverse th {
+    color: #FFFFFF;
+    background-color: #000000;
+    
+}
