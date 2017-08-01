@@ -1,29 +1,32 @@
-<div class="row signOutRow">
-    <div class="offset-md-8 col-md-4">
-      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
-    </div>
+<div class="row">
+  <div class="col-md-4 mb-4">
+    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+  </div>
+  <div class="offset-md-4 col-md-4 mb-4">
+    <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+  </div>
 </div>
 <div class="row">
-  <div class="col-md-4">
+  <div class="col-md-4 mb-4">
     <button class="btn btn-md btn-primary btn-block" (click)="this.goSections()">Secciones</button>
   </div>
-  <div class="col-md-4 offset-md-4">
-    <button class="btn btn-md btn-primary btn-block" (click)="this.goCreateStudent()">Crear estudiante</button>
+  <div class="col-md-4 offset-md-4 mb-4">
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goCreateStudent()" *ngIf="this._loggedUser?.role=='ADMIN'">Crear estudiante</button>
   </div>
 </div>
-<div class="row" style="margin-top:5%">
-  <div class="col-md-4">
+<div class="row">
+  <div class="col-md-4 mb-4">
     <button class="btn btn-md btn-primary btn-block" (click)="this.goChooseDate()">Ver asistencia</button>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4 mb-4">
     <button class="btn btn-md btn-primary btn-block" (click)="this.goCreateAttendance()">Agregar asistencia</button>
   </div>
   <div class="col-md-4">
-    <button class="btn btn-md btn-primary btn-block" (click)="this.goReport()">Ver reporte</button>
+    <button class="btn btn-md btn-primary btn-block" (click)="this.goReport()" *ngIf="this._loggedUser?.role=='ADMIN'">Ver reporte</button>
   </div>
 </div>
-<div class="row" style="margin-top:5%">
-  <div class="col-md-12 table-responsive">
+<div class="row">
+  <div class="col-md-12 table-responsive mt-5">
     <table class="table">
       <thead class="thead-inverse">
         <tr>
@@ -40,15 +43,15 @@
           <td>{{student.firstLastName+' '+student.secondLastName}}</td>
           <td>{{student.state}}</td>
           <td>
-            <button class="btn btn-info btn-block" (click)="this.goEditSection()">Editar</button>
+            <button class="btn btn-info btn-block" (click)="this.goEditSection()" *ngIf="this._loggedUser?.role=='ADMIN'">Editar</button>
           </td>
           <td>
             <button class="btn btn-info btn-block" (click)="this.goProfile(student.$key)">Ver</button>
           </td>
         </tr>
       </tbody>
-    
+
     </table>
   </div>
-  
+
 </div>

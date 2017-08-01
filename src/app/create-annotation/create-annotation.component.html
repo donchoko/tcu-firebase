@@ -1,13 +1,18 @@
-<div class="offset-md-8 col-md-4">
-  <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+<div class="row">
+  <div class="col-md-4 mb-4">
+    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+  </div>
+  <div class="offset-md-4 col-md-4">
+    <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-4">
     <button class="btn btn-md  btn-primary btn-block" (click)="this.goProfile()">Regresar</button>
   </div>
 </div>
-<div class="row" style="margin-top:5%">
-  <div class="col-md-12">
+<div class="row">
+  <div class="col-md-12 mt-5">
     <form #registroAnotacion="ngForm" (ngSubmit)="this.createAnnotation()"> 
       <div class="form-group">
         <label>Estudiante: {{this._student?.firstName+' '+this._student?.firstLastName}}</label>

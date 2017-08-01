@@ -20,6 +20,7 @@ export class EditAttendanceComponent implements OnInit {
   private _date;
   private _dateModel
   private _new_students;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute, config: NgbDatepickerConfig) {
     this._date = Number.parseInt(this.route.snapshot.paramMap.get('date'));
@@ -30,6 +31,9 @@ export class EditAttendanceComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.list('/attendances', {
           query: {
             orderByChild: 'date',

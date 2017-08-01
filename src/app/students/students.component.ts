@@ -12,6 +12,7 @@ import 'rxjs/add/operator/map';
 })
 export class StudentsComponent implements OnInit {
   private _students:FirebaseListObservable<any>;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this.afAuth.authState.subscribe(authUser=>{
@@ -19,6 +20,9 @@ export class StudentsComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.route.paramMap.map((params: ParamMap) =>
           this.db.list('/students', {
             query: {

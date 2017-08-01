@@ -25,6 +25,7 @@ export class SectionReportComponent implements OnInit {
     type:'binary',
   }
   private _filename;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this._states = [
@@ -59,6 +60,9 @@ export class SectionReportComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.object('/schools/'+this.route.snapshot.paramMap.get('school'))
           .subscribe((school)=> this._school = school);
         
@@ -91,7 +95,7 @@ export class SectionReportComponent implements OnInit {
               this._states[1].amount++;
             }
             
-            else if(element.state == "Cambio de colegio"){
+            else if(element.state == "Traslado"){
               this._states[2].amount++;
             }
             
@@ -99,7 +103,7 @@ export class SectionReportComponent implements OnInit {
               this._states[3].amount++;
             }
 
-            else if(element.state == "Riesgo"){
+            else if(element.state == "Exclusión"){
               this._states[4].amount++;
             }
           });

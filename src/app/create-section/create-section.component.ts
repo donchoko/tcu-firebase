@@ -16,6 +16,7 @@ export class CreateSectionComponent implements OnInit {
   private courses:[string];
   private schools;
   private _section;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this.afAuth.authState.subscribe(authUser => {
@@ -23,6 +24,9 @@ export class CreateSectionComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this._section= {
           course:'',
           section:'',

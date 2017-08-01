@@ -13,6 +13,7 @@ import { DataService } from '../data.service';
 export class SchoolsComponent implements OnInit {
 
   private _schools:FirebaseListObservable<any>;
+  private _loggedUser;
 
   constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase, data:DataService) { 
     this.afAuth.authState.subscribe(authUser=>{
@@ -20,6 +21,9 @@ export class SchoolsComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this._schools = this.db.list('/schools');
       }
     });

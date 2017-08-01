@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   private _annotations;
   private _student;
   private _date;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this.afAuth.authState.subscribe(authUser=>{
@@ -23,6 +24,9 @@ export class ProfileComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
         .subscribe(
           (student)=> {

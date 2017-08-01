@@ -1,55 +1,61 @@
-<div class="row signOutRow">
-    <div class="offset-md-8 col-md-4">
-      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
-    </div>
+<div class="row">
+  <div class="col-md-4 mb-4">
+    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+  </div>
+  <div class="offset-md-4 col-md-4 mb-4">
+    <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-4">
     <button class="btn btn-primary btn-block" (click)="this.goSections()">Regresar</button>
   </div>
 </div>
-<div class="row" style="margin-top:5%">
-  <div class="col-md-12">
+<div class="row">
+  <div class="col-md-12 mt-5">
 
-    <form #registroSeccion="ngForm" (ngSubmit)="this.createSection()"> 
+    <form #registroSeccion="ngForm" (ngSubmit)="this.createSection()">
       <h2 align="right">Crear sección</h2>
 
       <div class="form-group">
         <label for="selectCourse">Grado</label>
-        <select class="form-control" id="selectCourse" required name="selectCourse" placeholder="Grado" [(ngModel)]="this._section.course" #selectCourse="ngModel">
+        <select class="form-control" id="selectCourse" required name="selectCourse" placeholder="Grado" [(ngModel)]="this._section.course"
+          #selectCourse="ngModel">
           <option *ngFor="let c of this.courses" [ngValue]="c">{{c}}</option>
         </select>
-          <div *ngIf="selectCourse.errors && selectCourse.touched" class="alert alert-danger">
-            <div [hidden]="!selectCourse.errors.required">El grado es requerido</div>
-          </div>
+        <div *ngIf="selectCourse.errors && selectCourse.touched" class="alert alert-danger">
+          <div [hidden]="!selectCourse.errors.required">El grado es requerido</div>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="inputSection">Sección</label>
-        <input type="text" class="form-control" required minlength="1"  id="inputSection" name="inputSection" placeholder="Sección" [(ngModel)]="this._section.section" #inputSection="ngModel">
-          <div *ngIf="inputSection.errors && (inputSection.dirty || inputSection.touched)" class="alert alert-danger">
-            <div [hidden]="!inputSection.errors.required">La Sección es requerido.</div>
-            <div [hidden]="!inputSection.errors.minlength">Debe de tener minimo 2 digitos.</div>
-            <div [hidden]="!inputSection.errors.pattern">Unicamente números con formato x-xx.</div>         
-      </div>
+        <input type="text" class="form-control" required minlength="1" id="inputSection" name="inputSection" placeholder="Sección"
+          [(ngModel)]="this._section.section" #inputSection="ngModel">
+        <div *ngIf="inputSection.errors && (inputSection.dirty || inputSection.touched)" class="alert alert-danger">
+          <div [hidden]="!inputSection.errors.required">La Sección es requerido.</div>
+          <div [hidden]="!inputSection.errors.minlength">Debe de tener minimo 2 digitos.</div>
+          <div [hidden]="!inputSection.errors.pattern">Unicamente números con formato x-xx.</div>
+        </div>
       </div>
       <div class="form-group">
         <label for="selectSchool">Colegio</label>
-        <select class="form-control" id="selectSchool" required name="selectSchool" placeholder="Colegio" [(ngModel)]="this._section.school" #selectSchool="ngModel">
+        <select class="form-control" id="selectSchool" required name="selectSchool" placeholder="Colegio" [(ngModel)]="this._section.school"
+          #selectSchool="ngModel">
           <option *ngFor="let school of this.schools | async" [ngValue]="school.$key">{{school.name}}</option>
         </select>
-            <div *ngIf="selectSchool.errors && selectSchool.touched" class="alert alert-danger">
-            <div [hidden]="!selectSchool.errors.required">El colegio es requerido</div>
-          </div>
+        <div *ngIf="selectSchool.errors && selectSchool.touched" class="alert alert-danger">
+          <div [hidden]="!selectSchool.errors.required">El colegio es requerido</div>
+        </div>
       </div>
       <div class="form-group">
         <label for="selectYear">Año</label>
-        <select class="form-control" id="selectYear" required name="selectYear"  [(ngModel)]="this._section.year"#selectYear="ngModel">
+        <select class="form-control" id="selectYear" required name="selectYear" [(ngModel)]="this._section.year" #selectYear="ngModel">
           <option *ngFor="let year of this.years" [ngValue]="year">{{year}}</option>
         </select>
-            <div *ngIf="selectYear.errors && selectYear.touched" class="alert alert-danger">
-            <div [hidden]="!selectYear.errors.required">El año es requerido</div>
-            </div>
+        <div *ngIf="selectYear.errors && selectYear.touched" class="alert alert-danger">
+          <div [hidden]="!selectYear.errors.required">El año es requerido</div>
+        </div>
       </div>
       <button type="submit" class="btn btn-primary" [disabled]="!registroSeccion.form.valid">Crear</button>
     </form>

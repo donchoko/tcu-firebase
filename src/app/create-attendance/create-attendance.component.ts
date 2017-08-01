@@ -18,7 +18,8 @@ export class CreateAttendanceComponent implements OnInit {
   private _attendances:any[];
   private _students;
   private _date;
-  private _dateModel
+  private _dateModel;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute, config: NgbDatepickerConfig) { 
     this._date = new Date();
@@ -31,6 +32,9 @@ export class CreateAttendanceComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.list('/students', {
           query: {
             orderByChild:'section',

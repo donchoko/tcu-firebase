@@ -17,6 +17,7 @@ export class CreateStudentComponent implements OnInit {
   private states:[string];
   private _school;
   private _section;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this._student={
@@ -33,6 +34,9 @@ export class CreateStudentComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((s)=>{
           this._school= s,
           this._student.school = s.$key;
@@ -46,6 +50,8 @@ export class CreateStudentComponent implements OnInit {
           'Activo',
           'Inactivo',
           'NSP',
+          'Traslado',
+          'Exclusión'
         ];
 
       }

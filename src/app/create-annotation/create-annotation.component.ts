@@ -15,6 +15,7 @@ export class CreateAnnotationComponent implements OnInit {
 
   private _student;
   private _annotation;
+  private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this._annotation= {
@@ -29,6 +30,9 @@ export class CreateAnnotationComponent implements OnInit {
         this.router.navigate(['']);
       }
       else{
+        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+          this._loggedUser = user;
+        });
         this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
           .subscribe((student)=> {this._student= student, this._annotation.student= student.$key});
         this._annotation.date= firebase.database.ServerValue.TIMESTAMP;
