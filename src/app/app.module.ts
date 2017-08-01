@@ -27,6 +27,9 @@ import { ChooseDateComponent } from './choose-date/choose-date.component';
 import { CreateAttendanceComponent } from './create-attendance/create-attendance.component';
 import { EditAttendanceComponent } from './edit-attendance/edit-attendance.component';
 import { SectionReportComponent } from './section-report/section-report.component';
+import { EditSchoolComponent } from './edit-school/edit-school.component';
+import { EditSectionComponent } from './edit-section/edit-section.component';
+import { EditStudentComponent } from './edit-student/edit-student.component';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -44,6 +47,9 @@ const appRoutes: Routes= [
   { path:'sections/:school/create', component:CreateSectionComponent},
   { path:'annotation/create/:student', component:CreateAnnotationComponent},
   { path:'attendance/:section/create', component:CreateAttendanceComponent},
+  { path:'schools/:school/edit', component:EditSchoolComponent},
+  { path:'sections/:school/:section/edit', component:EditSectionComponent},
+  { path:'students/:school/:section/:student/edit', component:EditStudentComponent},
   { path:'**', component:PageNotFoundComponent},
 ]
 
@@ -65,7 +71,10 @@ const appRoutes: Routes= [
     ChooseDateComponent,
     CreateAttendanceComponent,
     EditAttendanceComponent,
-    SectionReportComponent
+    SectionReportComponent,
+    EditSchoolComponent,
+    EditSectionComponent,
+    EditStudentComponent
   ],
   imports: [
     BrowserModule,

@@ -45,8 +45,8 @@ export class SchoolsComponent implements OnInit {
     this.router.navigate(['/schools/create']);
   }
 
-  goEditSchool(){
-    console.log("AGREGAR LOGICA PARA IR A EDITAR");
+  goEditSchool(uid:string){
+    this.router.navigate(['/schools/'+uid+'/edit']);
   }
 
   goUsers(){

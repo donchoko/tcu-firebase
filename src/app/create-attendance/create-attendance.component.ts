@@ -43,13 +43,15 @@ export class CreateAttendanceComponent implements OnInit {
         }).subscribe((items) => {
           if(items){
             items.map((student)=>{
-              this._attendances.push({
-                name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName,
-                student: student.$key,
-                date:this._date,
-                attended: true,
-                section: this.route.snapshot.paramMap.get('section')
-              })
+              if(student.state != "Inactivo"){
+                this._attendances.push({
+                  name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName,
+                  student: student.$key,
+                  date:this._date,
+                  attended: true,
+                  section: this.route.snapshot.paramMap.get('section')
+                })
+              }
             })
           } 
         }); 
@@ -69,7 +71,7 @@ export class CreateAttendanceComponent implements OnInit {
         }).subscribe((list)=>{
           console.log(list);
           if(list.some( element => element.date == this._date)){
-            console.log("YA EXISTE");
+            window.alert("Ya existe asistencia para la fecha seleccionada");
           }
           else{
             console.log("NO EXISTE")

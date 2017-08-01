@@ -13,13 +13,14 @@ export class CreateSchoolComponent implements OnInit {
 
   private _school;
   private _loggedUser;
+  
   constructor(private router:Router, private afAuth: AngularFireAuth, private data:DataService, private db:AngularFireDatabase){
     this.afAuth.authState.subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
       else{
-        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
+        this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
       }

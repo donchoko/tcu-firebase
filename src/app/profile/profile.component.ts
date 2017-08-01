@@ -64,6 +64,10 @@ export class ProfileComponent implements OnInit {
     this.router.navigate(['/annotation/create/'+this.route.snapshot.paramMap.get('student')]);
   }
 
+  deleteAnnotation(id:string){
+    this.db.object('/annotations/'+id).remove().then(()=>window.alert("Anotación elminada"));
+  }
+
   
   ngOnInit() {
   }

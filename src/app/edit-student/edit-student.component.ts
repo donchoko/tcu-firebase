@@ -5,13 +5,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 
-
 @Component({
-  selector: 'app-create-student',
-  templateUrl: './create-student.component.html',
-  styleUrls: ['./create-student.component.css']
+  selector: 'app-edit-student',
+  templateUrl: './edit-student.component.html',
+  styleUrls: ['./edit-student.component.css']
 })
-export class CreateStudentComponent implements OnInit {
+export class EditStudentComponent implements OnInit {
 
   private _student;
   private states:[string];
@@ -20,15 +19,6 @@ export class CreateStudentComponent implements OnInit {
   private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this._student={
-      firstName:'',
-      secondName:'',
-      firstLastName:'',
-      secondLastName:'',
-      section:'',
-      state:''
-    };
-
     this.afAuth.authState.subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
@@ -37,6 +27,11 @@ export class CreateStudentComponent implements OnInit {
         this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
+
+        this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).subscribe((student)=>{
+          this._student = student;
+        });
+
         this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((s)=>{
           this._school= s,
           this._student.school = s.$key;
@@ -58,17 +53,21 @@ export class CreateStudentComponent implements OnInit {
     });
   }
 
+  compareValue(val1, val2){
+    return val1 === val2;
+  }
+
   goStudents() {
     this.router.navigate(['/students/'+this.route.snapshot.paramMap.get('school')+'/'+this.route.snapshot.paramMap.get('section')]);
   }
 
-  createStudent(){
+  editStudent(){
     this.afAuth.authState.subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this.db.list('/students').push(this._student).then(()=>this.goStudents());
+        this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).update(this._student).then(()=>this.goStudents());
       }
     });
   }
@@ -78,7 +77,6 @@ export class CreateStudentComponent implements OnInit {
   }
 
   ngOnInit() {
-    
   }
 
 }

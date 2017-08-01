@@ -33,7 +33,6 @@
           <th>Fecha</th>
           <th>Creada por</th>
           <th></th>
-          <th></th>
         </tr>
       </thead>
       <tbody *ngFor="let annotation of this._annotations | async">
@@ -51,10 +50,7 @@
           <td>{{annotation?.date | date:'dd/MM/yyyy'}}</td>
           <td>{{annotation?.createdBy}}</td>
           <td>
-            <button class="btn btn-info btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goEditSection()">Editar</button>
-          </td>
-          <td>
-            <button class="btn btn-info btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goClassrooms()">Eliminar</button>
+            <button class="btn btn-info btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.deleteAnnotation(annotation.$key)">Eliminar</button>
           </td>
         </tr>
       </tbody>

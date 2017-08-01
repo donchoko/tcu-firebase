@@ -68,4 +68,8 @@ export class StudentsComponent implements OnInit {
   goChooseDate(){
     this.router.navigate(['/attendance/'+this.route.snapshot.paramMap.get('section')+'/date']);
   }
+
+  goEditStudent(student:string){
+    this.router.navigate(['students/'+this.route.snapshot.paramMap.get('school')+'/'+this.route.snapshot.paramMap.get('section')+'/'+student+'/edit'])
+  }
 }

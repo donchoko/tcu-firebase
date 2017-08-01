@@ -25,6 +25,11 @@
     <button class="btn btn-md btn-primary btn-block" (click)="this.goReport()" *ngIf="this._loggedUser?.role=='ADMIN'">Ver reporte</button>
   </div>
 </div>
+<div class="row mt-5">
+  <div class="col-12">
+    <h3>Lista de estudiantes</h3>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12 table-responsive mt-5">
     <table class="table">
@@ -43,7 +48,7 @@
           <td>{{student.firstLastName+' '+student.secondLastName}}</td>
           <td>{{student.state}}</td>
           <td>
-            <button class="btn btn-info btn-block" (click)="this.goEditSection()" *ngIf="this._loggedUser?.role=='ADMIN'">Editar</button>
+            <button class="btn btn-info btn-block" (click)="this.goEditStudent(student.$key)" *ngIf="this._loggedUser?.role=='ADMIN'">Editar</button>
           </td>
           <td>
             <button class="btn btn-info btn-block" (click)="this.goProfile(student.$key)">Ver</button>

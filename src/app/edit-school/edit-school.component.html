@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-4 mb-4">
+      <label *ngIf="this._loggedUser">Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+    </div>
+    <div class="offset-md-4 col-md-4 mb-4">
+      <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <button class="btn btn-md btn-primary btn-block" (click)="this.goSchools()">Regresar</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 mb-5">
+      <form #registroColegio="ngForm" (ngSubmit)="this.updateSchool()">
+        <h2 align="right">Editar colegio</h2>
+        <div class="form-group">
+          <label for="inputName">Nombre</label>
+          <input type="text" class="form-control" required minlength="4" maxlength="100" id="inputName" name="inputName" placeholder="Nombre" [ngModel]="this._school?.name" (ngModelChange)="this._school.name = $event" #inputName="ngModel">
+          <div *ngIf="inputName.errors && (inputName.dirty || inputName.touched)" class="alert alert-danger">
+            <div [hidden]="!inputName.errors.required">El nombre es requerido.</div>
+            <div [hidden]="!inputName.errors.minlength">El nombre debe de tener minimo 4 letras.</div>
+            <div [hidden]="!inputName.errors.maxlength">El nombre debe de tener maximo 100 letras.</div>
+          </div>
+  
+        </div>
+        <div class="form-group">
+          <label for="inputAdress">Dirección</label>
+          <input type="text" class="form-control" required minlength="4" maxlength="1000" id="inputAdress" name="inputAdress" placeholder="Dirección"
+          [ngModel]="this._school?.address" (ngModelChange)="this._school.address = $event" #inputAdress="ngModel">
+          <div *ngIf="inputAdress.errors && (inputAdress.dirty || inputAdress.touched)" class="alert alert-danger">
+            <div [hidden]="!inputAdress.errors.required">La dirección es requerida.</div>
+            <div [hidden]="!inputAdress.errors.minlength">La dirección debe de tener minimo 4 letras.</div>
+            <div [hidden]="!inputAdress.errors.maxlength">La dirección debe de tener maximo 100 letras.</div>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="inputPhone">Teléfono</label>
+          <input type="text" class="form-control" required minlength="8" maxlength="11" pattern="^\d{2}-\d{2}-\d{4}$" id="inputPhone"
+            name="inputPhone" placeholder="Teléfono" [ngModel]="this._school?.phone" (ngModelChange)="this._school.phone = $event" #inputPhone="ngModel">
+          <div *ngIf="inputPhone.errors && (inputPhone.dirty || inputPhone.touched)" class="alert alert-danger">
+            <div [hidden]="!inputPhone.errors.required">El número de telefono es requerido.</div>
+            <div [hidden]="!inputPhone.errors.minlength">El número de telefono debe de tener minimo 8 digitos.</div>
+            <div [hidden]="!inputPhone.errors.maxlength">El número de teléfono debe de tener maximo 11 digitos.</div>
+            <div [hidden]="!inputPhone.errors.pattern">Unicamente números con formato xx-xx-xxxx.</div>
+          </div>
+        </div>
+  
+        <button type="submit" class="btn btn-primary" [disabled]="!registroColegio.form.valid">Crear</button>
+      </form>
+    </div>
+  </div>

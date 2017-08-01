@@ -22,6 +22,10 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
   }
 
+  resetPassword(email:string){
+    this.afAuth.auth.sendPasswordResetEmail(email).then(()=>window.alert("Email para reestablecer password enviado"));
+  }
+
   goSchools(){
     this.router.navigate(['/schools']);
   }

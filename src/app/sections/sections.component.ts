@@ -56,7 +56,12 @@ export class SectionsComponent implements OnInit {
   goStudents(section:string) {
     this.route.paramMap.map((params: ParamMap) =>
       params.get('school')
-    ).subscribe((param)=> this.router.navigate(['/students/'+param+'/'+section]))
-    
+    ).subscribe((param)=> this.router.navigate(['/students/'+param+'/'+section]));
+  }
+
+  goEditSection(section:string) {
+    this.route.paramMap.map((params: ParamMap) =>
+      params.get('school')
+    ).subscribe((param)=> this.router.navigate(['/sections/'+param+'/'+section+'/edit']));
   }
 }

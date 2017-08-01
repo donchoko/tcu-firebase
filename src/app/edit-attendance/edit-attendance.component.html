@@ -11,12 +11,18 @@
     <button class="btn btn-md btn-primary btn-block" (click)="this.goStudents()">Regresar</button>
   </div>
 </div>
+<div class="row" *ngIf="this._errorMessage">
+  <div class="col-md-12 mt-5">
+    <h3>{{this._errorMessage}}</h3>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12 mt-5">
-    <form #formAttendance="ngForm" (ngSubmit)="this.createAttendance()">
+    <form *ngIf="!this._errorMessage" #formAttendance="ngForm" (ngSubmit)="this.createAttendance()">
+      <h2 align="right">Editar asistencia</h2>
       <div class="form-group row" style="margin-top: 10%; margin-bottom:10%">
-        <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectNone()">Ninguno</button></div>
-        <div class="col-6"><button class="btn btn-md btn-primary btn-block" (click)="this.selectAll()">Todos</button></div>
+        <div class="col-6"><button type="button" class="btn btn-md btn-primary btn-block" (click)="this.selectNone()">Ninguno</button></div>
+        <div class="col-6"><button type="button" class="btn btn-md btn-primary btn-block" (click)="this.selectAll()">Todos</button></div>
       </div>
       <div class="row">
         <div class="col-12">

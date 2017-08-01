@@ -14,6 +14,7 @@
 <div class="row">
   <div class="col-md-12 mt-5">
     <form #formAttendance="ngForm" (ngSubmit)="this.goEditDate()"> 
+      <h2 align="left">Seleccionar fecha</h2>
       <div class="form-group">
         <label for="pickDate">
           <span>Fecha:</span>
@@ -24,7 +25,7 @@
         </div>
       </div>
       <div style="margin-top: 10%;">
-        <button type="submit" class="btn btn-primary" [disabled]="!this._dateModel">Crear</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!this._dateModel">Ver</button>
         </div>
     </form>  
   </div>

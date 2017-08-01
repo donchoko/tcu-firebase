@@ -6,11 +6,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 
 @Component({
-  selector: 'app-create-section',
-  templateUrl: './create-section.component.html',
-  styleUrls: ['./create-section.component.css']
+  selector: 'app-edit-section',
+  templateUrl: './edit-section.component.html',
+  styleUrls: ['./edit-section.component.css']
 })
-export class CreateSectionComponent implements OnInit {
+export class EditSectionComponent implements OnInit {
 
   private years:[number];
   private courses:[string];
@@ -19,34 +19,6 @@ export class CreateSectionComponent implements OnInit {
   private _loggedUser;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this.courses=[
-      'Primero',
-      'Segundo',
-      'Tercero',
-      'Cuarto',
-      'Quinto',
-      'Sexto',
-      'Séptimo',
-      'Octavo',
-      'Noveno',
-      'Décimo',
-      'Undécimo'
-    ];
-
-    this.years = [
-      2017,
-      2018,
-      2019,
-      2020,
-      2021,
-      2022,
-      2023,
-      2024,
-      2025,
-      2026,
-      2027,
-    ];
-
     this.afAuth.authState.subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
@@ -55,16 +27,42 @@ export class CreateSectionComponent implements OnInit {
         this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
-        this._section= {
-          course:'',
-          section:'',
-          school:'',
-          year:''
-        };
+
+        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).subscribe((section)=>{
+          this._section = section;
+        });
+        
+        console.log(this.route.snapshot.paramMap.get('school'));
         this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((school)=>{
           this._school = school;
-          this._section.school = school.$key;
         });
+
+        this.courses=[
+          'Primero',
+          'Segundo',
+          'Tercero',
+          'Cuarto',
+          'Quinto',
+          'Sexto',
+          'Séptimo',
+          'Octavo',
+          'Noveno',
+          'Décimo',
+          'Undécimo'
+        ];
+        this.years = [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026,
+          2027,
+        ]
       }
     });
   }
@@ -79,17 +77,20 @@ export class CreateSectionComponent implements OnInit {
     ).subscribe((param)=> this.router.navigate(['/sections/'+param]))
   }
 
-  createSection(){
+  editSection(){
     this.afAuth.authState.subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this.db.list('/sections').push(this._section).then(()=>this.goSections());
+        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).update(this._section).then(()=>this.goSections());
       }
     });
   }
 
+  compareValue(val1, val2){
+    return val1 === val2;
+  }
 
   ngOnInit() {
   }

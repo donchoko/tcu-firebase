@@ -21,6 +21,7 @@ export class EditAttendanceComponent implements OnInit {
   private _dateModel
   private _new_students;
   private _loggedUser;
+  private _errorMessage;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute, config: NgbDatepickerConfig) {
     this._date = Number.parseInt(this.route.snapshot.paramMap.get('date'));
@@ -40,9 +41,8 @@ export class EditAttendanceComponent implements OnInit {
             equalTo: Number.parseInt(this.route.snapshot.paramMap.get('date'))
           }
         }).subscribe((attendances) => {
-          if (attendances) {
+          if (attendances && attendances.length>0) {
             this._attendances = attendances;
-            console.log(this._attendances);
             this.db.list('/students', {
               query: {
                 orderByChild: 'section',
@@ -60,6 +60,9 @@ export class EditAttendanceComponent implements OnInit {
                 }
               });
             })
+          }
+          else{
+            this._errorMessage = "No existe asistencias para este día";
           }
         });
       }
