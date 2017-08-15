@@ -30,6 +30,8 @@ import { SectionReportComponent } from './section-report/section-report.componen
 import { EditSchoolComponent } from './edit-school/edit-school.component';
 import { EditSectionComponent } from './edit-section/edit-section.component';
 import { EditStudentComponent } from './edit-student/edit-student.component';
+import { SectionPipe } from './section-pipe.pipe';
+import { UserPipe } from './user-pipe.pipe';
 
 const appRoutes: Routes= [
   { path:'', component:LoginComponent},
@@ -74,7 +76,9 @@ const appRoutes: Routes= [
     SectionReportComponent,
     EditSchoolComponent,
     EditSectionComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    SectionPipe,
+    UserPipe
   ],
   imports: [
     BrowserModule,

@@ -27,6 +27,16 @@ export class SectionReportComponent implements OnInit {
   private _filename;
   private _loggedUser;
 
+  /*Estados
+    'Activo',
+    'Riesgo',
+    'NSP',
+    'Traslado',
+    'Exclusión',
+    'Ausente'
+  */
+
+
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this._states = [
       {
@@ -34,7 +44,7 @@ export class SectionReportComponent implements OnInit {
         amount: 0
       },
       {
-        name:'Inactivo',
+        name:'Exclusión',
         amount: 0
       },
       {
@@ -42,7 +52,7 @@ export class SectionReportComponent implements OnInit {
         amount: 0
       },
       {
-        name:'Cambio de colegio',
+        name:'Traslado',
         amount: 0
       },
       {
@@ -87,26 +97,31 @@ export class SectionReportComponent implements OnInit {
               state: element.state
             })
 
-            if(element.state == "Activo"){
+            if(element.state == "Activo" || element.state == "Ausente"){
               this._states[0].amount++;
             }
 
-            else if(element.state == "Inactivo"){
+            else if(element.state == "Exclusión"){
               this._states[1].amount++;
             }
             
-            else if(element.state == "Traslado"){
+            else if(element.state == "NSP"){
               this._states[2].amount++;
             }
             
-            else if(element.state == "NSP"){
+            else if(element.state == "Traslado"){
               this._states[3].amount++;
             }
 
-            else if(element.state == "Exclusión"){
+            else if(element.state == "Riesgo"){
               this._states[4].amount++;
             }
           });
+
+          this._students.sort(function(a,b){
+            return a.name.localeCompare(b.name);
+          });
+
           for(let i=0; i<this._states.length-1; i++){
             console.log(this._states[5].amount +" - "+ this._states[i].amount);
             this._states[5].amount += this._states[i].amount;

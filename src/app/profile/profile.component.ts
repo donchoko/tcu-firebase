@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import { SectionPipe } from '../section-pipe.pipe';
+import { UserPipe } from '../user-pipe.pipe';
 
 @Component({
   selector: 'app-profile',
@@ -34,7 +36,8 @@ export class ProfileComponent implements OnInit {
             this._attendances = this.db.list('/attendances', {
                 query: {
                   orderByChild:'student',
-                  equalTo: this._student.$key
+                  equalTo: this._student.$key,
+                  limitToLast: 10
                 }
             });
 

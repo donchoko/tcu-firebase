@@ -4,6 +4,7 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take'; 
 import * as firebase from 'firebase';
 import { NgbDatepickerConfig, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
@@ -43,7 +44,7 @@ export class CreateAttendanceComponent implements OnInit {
         }).subscribe((items) => {
           if(items){
             items.map((student)=>{
-              if(student.state != "Inactivo"){
+              if(student.state != "Traslado"){
                 this._attendances.push({
                   name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName,
                   student: student.$key,
@@ -68,16 +69,22 @@ export class CreateAttendanceComponent implements OnInit {
             orderByChild:'section',
             equalTo: this.route.snapshot.paramMap.get('section')
           }
-        }).subscribe((list)=>{
-          console.log(list);
+        }).take(1).subscribe((list)=>{
           if(list.some( element => element.date == this._date)){
-            window.alert("Ya existe asistencia para la fecha seleccionada");
+            window.alert("Ya existe asistencia en esa fecha");
           }
           else{
-            console.log("NO EXISTE")
             for(let a of this._attendances){
               a.date = this._date;
-              this.db.list('/attendances').push(a);
+              this.db.list('/attendances').push(a).then(()=>{
+                if(a.attended==false){
+                  this.db.object('/students/'+a.student+"/state").set('Ausente');
+                  this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+                }else if(a.attended==true){
+                  this.db.object('/students/'+a.student+"/state").set('Activo');
+                  this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+                }
+              })
             }
             this.goStudents();
           }

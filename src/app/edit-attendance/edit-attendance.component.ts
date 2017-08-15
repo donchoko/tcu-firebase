@@ -71,14 +71,27 @@ export class EditAttendanceComponent implements OnInit {
 
   createAttendance() {
     for (let a of this._attendances) {
-      console.log(a.$key);
       this.db.object('/attendances/' + a.$key).update(a);
+      if(a.attended==false){
+        this.db.object('/students/'+a.student+"/state").set('Ausente');
+        this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+      }else if(a.attended==true){
+        this.db.object('/students/'+a.student+"/state").set('Activo');
+        this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+      }
     }
 
     if (this._new_students && this._new_students.length > 0) {
       for (let a of this._new_students) {
         a.date = this._date;
         this.db.list('/attendances').push(a);
+        if(a.attended==false){
+          this.db.object('/students/'+a.student+"/state").set('Ausente');
+          this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+        }else if(a.attended==true){
+          this.db.object('/students/'+a.student+"/state").set('Activo');
+          this.db.object('/students/'+a.student+"/stateModified").set(this._date);
+        }
       }
     }
     this.goStudents();

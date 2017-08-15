@@ -30,7 +30,20 @@ export class CreateSectionComponent implements OnInit {
       'Octavo',
       'Noveno',
       'Décimo',
-      'Undécimo'
+      'Undécimo',
+      'Duodécimo',
+      'PN-1',
+      'PN-2',
+      'PN-3',
+      'PN-4',
+      'PN-5',
+      'PN-6',
+      'PN-7',
+      'PN-8',
+      'PN-9',
+      'PN-10',
+      'PN-11',
+      'PN-12',
     ];
 
     this.years = [

@@ -15,6 +15,7 @@ export class EditStudentComponent implements OnInit {
   private _student;
   private states:[string];
   private _school;
+  private _sections;
   private _section;
   private _loggedUser;
 
@@ -41,12 +42,20 @@ export class EditStudentComponent implements OnInit {
           this._student.section = s.$key;
         });
 
+        this.db.list('/sections',{query: {
+          orderByChild:'school',
+          equalTo: this.route.snapshot.paramMap.get('school')
+        }}).subscribe((sections)=>{
+          this._sections= sections
+        });
+
         this.states=[
           'Activo',
-          'Inactivo',
+          'Riesgo',
           'NSP',
           'Traslado',
-          'Exclusión'
+          'Exclusión',
+          'Ausente'
         ];
 
       }
@@ -67,6 +76,10 @@ export class EditStudentComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        if(this._student.identification==''){
+          this._student.identification = 'N/A';
+        }
+
         this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).update(this._student).then(()=>this.goStudents());
       }
     });

@@ -26,7 +26,8 @@ export class CreateStudentComponent implements OnInit {
       firstLastName:'',
       secondLastName:'',
       section:'',
-      state:''
+      state:'',
+      identification:''
     };
 
     this.afAuth.authState.subscribe(authUser => {
@@ -48,10 +49,11 @@ export class CreateStudentComponent implements OnInit {
 
         this.states=[
           'Activo',
-          'Inactivo',
+          'Riesgo',
           'NSP',
           'Traslado',
-          'Exclusión'
+          'Exclusión',
+          'Ausente'
         ];
 
       }
@@ -68,6 +70,10 @@ export class CreateStudentComponent implements OnInit {
         this.router.navigate(['']);
       }
       else {
+        if(this._student.identification==''){
+          this._student.identification = 'N/A';
+        }
+
         this.db.list('/students').push(this._student).then(()=>this.goStudents());
       }
     });
