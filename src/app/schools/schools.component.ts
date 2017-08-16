@@ -4,6 +4,9 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { DataService } from '../data.service';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 
 @Component({
   selector: 'app-schools',
@@ -14,16 +17,15 @@ export class SchoolsComponent implements OnInit {
 
   private _schools:FirebaseListObservable<any>;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router:Router, private afAuth: AngularFireAuth, private db:AngularFireDatabase, data:DataService) { 
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
       else{
-        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
-          this._loggedUser = user;
-        });
+        this._loggedUser = this.db.object('/users/'+authUser.uid);
         this._schools = this.db.list('/schools');
       }
     });
@@ -51,6 +53,11 @@ export class SchoolsComponent implements OnInit {
 
   goUsers(){
     this.router.navigate(['/users']);
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

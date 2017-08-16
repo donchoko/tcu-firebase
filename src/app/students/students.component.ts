@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-students',
@@ -13,9 +15,10 @@ import 'rxjs/add/operator/map';
 export class StudentsComponent implements OnInit {
   private _students:FirebaseListObservable<any>;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
@@ -71,5 +74,10 @@ export class StudentsComponent implements OnInit {
 
   goEditStudent(student:string){
     this.router.navigate(['students/'+this.route.snapshot.paramMap.get('school')+'/'+this.route.snapshot.paramMap.get('section')+'/'+student+'/edit'])
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

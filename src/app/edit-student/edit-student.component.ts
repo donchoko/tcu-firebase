@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-edit-student',
@@ -18,34 +20,33 @@ export class EditStudentComponent implements OnInit {
   private _sections;
   private _section;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this.db.object('/users/'+authUser.uid).subscribe((user)=>{
-          this._loggedUser = user;
-        });
+        this._loggedUser= this.db.object('/users/'+authUser.uid);
 
-        this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).subscribe((student)=>{
+        this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).takeUntil(this.ngUnsubscribe).subscribe((student)=>{
           this._student = student;
         });
 
-        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((s)=>{
-          this._school= s,
-          this._student.school = s.$key;
+        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).takeUntil(this.ngUnsubscribe).subscribe((s)=>{
+          this._school= s;
+          //this._student.school = s.$key;
         });
-        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).subscribe((s)=>{
-          this._section= s,
-          this._student.section = s.$key;
+        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).takeUntil(this.ngUnsubscribe).subscribe((s)=>{
+          this._section= s;
+          //this._student.section = s.$key
         });
 
         this.db.list('/sections',{query: {
           orderByChild:'school',
           equalTo: this.route.snapshot.paramMap.get('school')
-        }}).subscribe((sections)=>{
+        }}).takeUntil(this.ngUnsubscribe).subscribe((sections)=>{
           this._sections= sections
         });
 
@@ -71,7 +72,7 @@ export class EditStudentComponent implements OnInit {
   }
 
   editStudent(){
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
@@ -91,5 +92,11 @@ export class EditStudentComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
 
 }

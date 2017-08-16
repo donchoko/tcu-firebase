@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-edit-section',
@@ -17,23 +19,22 @@ export class EditSectionComponent implements OnInit {
   private _school;
   private _section;
   private _loggedUser;
-
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
+  
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this.db.object('/users/'+authUser.uid).subscribe((user)=>{
-          this._loggedUser = user;
-        });
+        this._loggedUser = this.db.object('/users/'+authUser.uid);
 
-        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).subscribe((section)=>{
+        this.db.object('/sections/'+this.route.snapshot.paramMap.get('section')).takeUntil(this.ngUnsubscribe).subscribe((section)=>{
           this._section = section;
         });
         
         console.log(this.route.snapshot.paramMap.get('school'));
-        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((school)=>{
+        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).takeUntil(this.ngUnsubscribe).subscribe((school)=>{
           this._school = school;
         });
 
@@ -91,7 +92,7 @@ export class EditSectionComponent implements OnInit {
   }
 
   editSection(){
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
@@ -108,4 +109,8 @@ export class EditSectionComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

@@ -8,6 +8,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { environment } from 'environments/environment';
 import * as firebase from 'firebase';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-create-user',
@@ -19,9 +21,10 @@ export class CreateUserComponent implements OnInit {
 
   private _user;
   private roles;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private db: AngularFireDatabase, private router: Router, private data: DataService, public afAuth:AngularFireAuth){
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
@@ -82,6 +85,11 @@ export class CreateUserComponent implements OnInit {
 
   goUsers(){
     this.router.navigate(['/users']);
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

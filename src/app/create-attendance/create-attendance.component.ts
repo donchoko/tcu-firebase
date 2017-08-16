@@ -7,6 +7,8 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take'; 
 import * as firebase from 'firebase';
 import { NgbDatepickerConfig, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-create-attendance',
@@ -18,17 +20,20 @@ export class CreateAttendanceComponent implements OnInit {
 
   private _attendances:any[];
   private _students;
+  private _excluded_students
   private _date;
   private _dateModel;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute, config: NgbDatepickerConfig) { 
     this._date = new Date();
     this._dateModel;
     this._attendances= [];
+    this._excluded_students = [];
     config.minDate={year: this._date.getFullYear(), month: this._date.getMonth()+1, day: this._date.getDate()}
 
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
@@ -44,13 +49,18 @@ export class CreateAttendanceComponent implements OnInit {
         }).subscribe((items) => {
           if(items){
             items.map((student)=>{
-              if(student.state != "Traslado"){
+              if(student.state != "Traslado" && student.state != "Exclusión"){
                 this._attendances.push({
                   name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName,
                   student: student.$key,
                   date:this._date,
                   attended: true,
                   section: this.route.snapshot.paramMap.get('section')
+                })
+              }
+              else if(student.state == "Exclusión"){
+                this._excluded_students.push({
+                  name: student.firstName +' '+ student.secondName +' '+ student.firstLastName +' '+ student.secondLastName
                 })
               }
             })
@@ -125,4 +135,8 @@ export class CreateAttendanceComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

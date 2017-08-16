@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md-4 mb-4">
-    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+    <label>Usuario: {{(this._loggedUser|async)?.name + " " +(this._loggedUser|async)?.lastName}}</label>
   </div>
   <div class="offset-md-4 col-md-4 mb-4">
     <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>

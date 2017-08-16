@@ -1,6 +1,6 @@
 <div class="row ">
   <div class="col-md-4 mb-4">
-    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+    <label>Usuario: {{(this._loggedUser|async)?.name + " " +(this._loggedUser|async)?.lastName}}</label>
   </div>
   <div class="offset-md-4 col-md-4 mb-4">
     <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
@@ -11,12 +11,15 @@
     <button class="btn btn-md mb-4 btn-primary btn-block" (click)="this.goSchools()">Colegios</button>
   </div>
   <div class="col-md-4 offset-md-4">
-    <button class="btn btn-md btn-primary btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goCreateSection()">Crear sección</button>
+    <button class="btn btn-md btn-primary btn-block" *ngIf="(this._loggedUser|async)?.role=='ADMIN'" (click)="this.goCreateSection()">Crear sección</button>
   </div>
 </div>
 <div class="row mt-5">
     <div class="col-12">
       <h3>Lista de secciones</h3>
+    </div>
+    <div class="col-12">
+      <h3>{{(this._school|async)?.name}}</h3>
     </div>
 </div>
 <div class="row mt-5">
@@ -37,7 +40,7 @@
           <td>{{section.section}}</td>
           <td>{{section.year}}</td>
           <td>
-            <button class="btn btn-info btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goEditSection(section.$key)">Editar</button>
+            <button class="btn btn-info btn-block" *ngIf="(this._loggedUser|async)?.role=='ADMIN'" (click)="this.goEditSection(section.$key)">Editar</button>
           </td>
           <td>
             <button class="btn btn-info btn-block" (click)="this.goStudents(section.$key)">Ver</button>

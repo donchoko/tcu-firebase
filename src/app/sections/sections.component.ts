@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-sections',
@@ -13,24 +15,24 @@ import 'rxjs/add/operator/map';
 export class SectionsComponent implements OnInit {
   private _sections: any;
   private _loggedUser;
+  private _school;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) {
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
-          this._loggedUser = user;
-        });
-        this.route.paramMap.map((params: ParamMap) =>
-          this.db.list('/sections', {
+        this._loggedUser = this.db.object('/users/'+authUser.uid);
+        this._sections = this.db.list('/sections', {
             query: {
               orderByChild:'school',
-              equalTo: params.get('school')
+              equalTo: this.route.snapshot.paramMap.get('school')
             }
-          })
-        ).subscribe((sections: FirebaseListObservable<any>) => this._sections = sections);
+        });
+
+        this._school= this.db.object('/schools/'+this.route.snapshot.paramMap.get('school'));
       }
     });
   }
@@ -47,21 +49,19 @@ export class SectionsComponent implements OnInit {
   }
 
   goCreateSection() {
-    this.route.paramMap.map((params: ParamMap) =>
-      params.get('school')
-    ).subscribe((param)=> this.router.navigate(['/sections/'+param+'/create']))
-    
+    this.router.navigate(['/sections/'+this.route.snapshot.paramMap.get('school')+'/create']); 
   }
 
   goStudents(section:string) {
-    this.route.paramMap.map((params: ParamMap) =>
-      params.get('school')
-    ).subscribe((param)=> this.router.navigate(['/students/'+param+'/'+section]));
+    this.router.navigate(['/students/'+this.route.snapshot.paramMap.get('school')+'/'+section]);
   }
 
   goEditSection(section:string) {
-    this.route.paramMap.map((params: ParamMap) =>
-      params.get('school')
-    ).subscribe((param)=> this.router.navigate(['/sections/'+param+'/'+section+'/edit']));
+    this.router.navigate(['/sections/'+this.route.snapshot.paramMap.get('school')+'/'+section+'/edit']);
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

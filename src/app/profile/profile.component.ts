@@ -6,6 +6,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 import { SectionPipe } from '../section-pipe.pipe';
 import { UserPipe } from '../user-pipe.pipe';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-profile',
@@ -19,9 +21,10 @@ export class ProfileComponent implements OnInit {
   private _student;
   private _date;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
@@ -75,4 +78,8 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
   }
 
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

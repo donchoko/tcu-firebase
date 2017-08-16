@@ -1,6 +1,6 @@
 <div class="row ">
   <div class="col-md-4 mb-4">
-    <label>Usuario: {{this._loggedUser?.name + " " +this._loggedUser?.lastName}}</label>
+    <label>Usuario: {{(this._loggedUser|async)?.name + " " +(this._loggedUser|async)?.lastName}}</label>
   </div>
   <div class="offset-md-4 col-md-4 mb-4">
     <button class="btn btn-danger btn-block" (click)="this.signOut()">Cerrar sesión</button>
@@ -8,10 +8,10 @@
 </div>
 <div class="row">
   <div class="col-md-4 mb-4">
-    <button class="btn btn-primary btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goUsers()">Usuarios</button>
+    <button class="btn btn-primary btn-block" *ngIf="(this._loggedUser|async)?.role=='ADMIN'" (click)="this.goUsers()">Usuarios</button>
   </div>
   <div class="col-md-4 offset-md-4">
-    <button class="btn btn-primary btn-block" *ngIf="this._loggedUser?.role=='ADMIN'" (click)="this.goCreateSchool()">Crear colegio</button>
+    <button class="btn btn-primary btn-block" *ngIf="(this._loggedUser|async)?.role=='ADMIN'" (click)="this.goCreateSchool()">Crear colegio</button>
   </div>
 </div>
 <div class="row mt-5">
@@ -37,7 +37,7 @@
           <td>{{school.address}}</td>
           <td>{{school.phone}}</td>
           <td>
-            <button class="btn btn-info btn-block " (click)="this.goEditSchool(school.$key)" *ngIf="this._loggedUser?.role=='ADMIN'">Editar</button>
+            <button class="btn btn-info btn-block " (click)="this.goEditSchool(school.$key)" *ngIf="(this._loggedUser|async)?.role=='ADMIN'">Editar</button>
           </td>
           <td>
             <button class="btn btn-info btn-block" (click)="this.goClassrooms(school.$key)">Ver</button>

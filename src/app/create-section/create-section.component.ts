@@ -4,6 +4,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-create-section',
@@ -17,6 +19,7 @@ export class CreateSectionComponent implements OnInit {
   private _school;
   private _section;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this.courses=[
@@ -60,21 +63,19 @@ export class CreateSectionComponent implements OnInit {
       2027,
     ];
 
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
       else {
-        this.db.object('/users/'+authUser.uid).subscribe((user)=>{
-          this._loggedUser = user;
-        });
+        this._loggedUser = this.db.object('/users/'+authUser.uid);
         this._section= {
           course:'',
           section:'',
           school:'',
           year:''
         };
-        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).subscribe((school)=>{
+        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school')).takeUntil(this.ngUnsubscribe).subscribe((school)=>{
           this._school = school;
           this._section.school = school.$key;
         });
@@ -87,13 +88,11 @@ export class CreateSectionComponent implements OnInit {
   }
 
   goSections(){
-    this.route.paramMap.map((params: ParamMap) =>
-      params.get('school')
-    ).subscribe((param)=> this.router.navigate(['/sections/'+param]))
+    this.router.navigate(['/sections/'+this.route.snapshot.paramMap.get('school')])
   }
 
   createSection(){
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
@@ -105,6 +104,11 @@ export class CreateSectionComponent implements OnInit {
 
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
 }

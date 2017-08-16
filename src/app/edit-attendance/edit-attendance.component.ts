@@ -6,6 +6,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/map';
 import * as firebase from 'firebase';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-edit-attendance',
@@ -22,12 +24,13 @@ export class EditAttendanceComponent implements OnInit {
   private _new_students;
   private _loggedUser;
   private _errorMessage;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute, config: NgbDatepickerConfig) {
     this._date = Number.parseInt(this.route.snapshot.paramMap.get('date'));
     this._dateModel;
     this._new_students = [];
-    this.afAuth.authState.subscribe(authUser => {
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser => {
       if (!authUser) {
         this.router.navigate(['']);
       }
@@ -130,7 +133,10 @@ export class EditAttendanceComponent implements OnInit {
 
   }
 
-
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 
   ngOnInit() {
   }

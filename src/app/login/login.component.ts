@@ -4,6 +4,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Rx';
 import { User } from 'firebase/app';
 import { Router } from '@angular/router';
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'app-login',
@@ -13,10 +15,11 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  user: Observable<User>;
+  private user: Observable<User>;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private router:Router, public afAuth: AngularFireAuth) {
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(authUser){
         this.router.navigate(['schools']);
       }
@@ -36,6 +39,11 @@ export class LoginComponent implements OnInit {
       }
     });
     
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   goSchools(){

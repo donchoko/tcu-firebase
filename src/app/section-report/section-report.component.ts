@@ -7,7 +7,9 @@ import 'rxjs/add/operator/map';
 import {saveAs} from 'file-saver';
 import * as XLSX from 'xlsx'; 
 import * as XlsxPopulate from 'xlsx-populate';
- 
+import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs/Subject';
+
 @Component({
   selector: 'app-section-report',
   templateUrl: './section-report.component.html',
@@ -26,6 +28,7 @@ export class SectionReportComponent implements OnInit {
   }
   private _filename;
   private _loggedUser;
+  private ngUnsubscribe: Subject<void> = new Subject<void>();
 
   /*Estados
     'Activo',
@@ -123,7 +126,7 @@ export class SectionReportComponent implements OnInit {
           });
 
           for(let i=0; i<this._states.length-1; i++){
-            console.log(this._states[5].amount +" - "+ this._states[i].amount);
+            //console.log(this._states[5].amount +" - "+ this._states[i].amount);
             this._states[5].amount += this._states[i].amount;
           }
         });
@@ -132,6 +135,11 @@ export class SectionReportComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy(){
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   signOut(){
