@@ -8,6 +8,7 @@ import * as firebase from 'firebase';
 import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'app-edit-attendance',
@@ -43,7 +44,7 @@ export class EditAttendanceComponent implements OnInit {
             orderByChild: 'date',
             equalTo: Number.parseInt(this.route.snapshot.paramMap.get('date'))
           }
-        }).subscribe((attendances) => {
+        }).take(1).subscribe((attendances) => {
           if (attendances && attendances.length>0) {
             this._attendances = attendances;
             this.db.list('/students', {
@@ -51,7 +52,7 @@ export class EditAttendanceComponent implements OnInit {
                 orderByChild: 'section',
                 equalTo: this.route.snapshot.paramMap.get('section')
               }
-            }).subscribe((students) => {
+            }).take(1).subscribe((students) => {
               students.forEach(student => {
                 if (attendances.some(attendance => student.$key == attendance.student) == false) {
                   this._new_students.push({

@@ -17,7 +17,13 @@
 
 <div class="row mt-5">
   <div class="col-12">
-    <h3>{{this._student?.firstName + ' ' + this._student?.firstLastName}}</h3>
+    <h3>Perfil de estudiante</h3>
+  </div>
+  <div class="col-12">
+    <h3>{{this._student?.firstName + ' ' + this._student?.secondName + ' ' + this._student?.firstLastName + ' ' + this._student?.secondLastName}}</h3>
+  </div>
+  <div class="col-12">
+    <h5>{{'Estado: ' + this._student?.state + ' - Última modificación: ' + (this._student?.stateModified | date:'dd/MM/yyyy')}}</h5>
   </div>
 </div>
 

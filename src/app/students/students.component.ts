@@ -13,9 +13,10 @@ import { Subject } from 'rxjs/Subject';
   styleUrls: ['./students.component.css']
 })
 export class StudentsComponent implements OnInit {
-  private _students:FirebaseListObservable<any>;
+  private _students;
   private _loggedUser;
   private ngUnsubscribe: Subject<void> = new Subject<void>();
+  private _section;
 
   constructor(private router: Router, private afAuth: AngularFireAuth, private db: AngularFireDatabase, private route: ActivatedRoute) { 
     this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
@@ -26,14 +27,14 @@ export class StudentsComponent implements OnInit {
         this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
-        this.route.paramMap.map((params: ParamMap) =>
-          this.db.list('/students', {
-            query: {
-              orderByChild:'section',
-              equalTo: params.get('section')
-            }
-          })
-        ).subscribe((students: FirebaseListObservable<any>) => this._students = students);
+        this._students = this.db.list('/students', {
+          query: {
+            orderByChild:'section',
+            equalTo: this.route.snapshot.paramMap.get('section')
+          }
+        });
+
+        this._section= this.db.object('/sections/'+this.route.snapshot.paramMap.get('section'));
       }
     });
   }

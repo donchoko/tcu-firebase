@@ -84,12 +84,14 @@
           <tr>
             <th>Estudiante</th>
             <th>Estado</th>
+            <th>Último cambio</th>
           </tr>
         </thead>
         <tbody *ngFor="let student of this._students">
           <tr>
             <td>{{student?.name}}</td>
             <td>{{student?.state}}</td>
+            <td>{{student?.stateModified | date:'dd/MM/yyyy'}}</td>
           </tr>
         </tbody>
       </table>

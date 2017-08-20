@@ -9,6 +9,7 @@ import * as XLSX from 'xlsx';
 import * as XlsxPopulate from 'xlsx-populate';
 import 'rxjs/add/operator/takeUntil';
 import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/take';
 
 @Component({
   selector: 'app-section-report',
@@ -68,7 +69,7 @@ export class SectionReportComponent implements OnInit {
       }
     ];
     
-    this.afAuth.authState.subscribe(authUser=>{
+    this.afAuth.authState.takeUntil(this.ngUnsubscribe).subscribe(authUser=>{
       if(!authUser){
         this.router.navigate(['']);
       }
@@ -76,12 +77,11 @@ export class SectionReportComponent implements OnInit {
         this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
-        this.db.object('/schools/'+this.route.snapshot.paramMap.get('school'))
-          .subscribe((school)=> this._school = school);
+        this._school = this.db.object('/schools/'+this.route.snapshot.paramMap.get('school'));
         
         this.db.object('/sections/'+this.route.snapshot.paramMap.get('section'))
-          .subscribe((section)=>{
-            this._section = section
+          .takeUntil(this.ngUnsubscribe).subscribe((section)=>{
+            this._section = section;
             this._date = new Date();
             this._filename = section.course+"-"+section.section+"-"+this._date.getDate()+'/'+this._date.getMonth()+'/'+this._date.getFullYear()+'.xlsx';
         });
@@ -91,13 +91,14 @@ export class SectionReportComponent implements OnInit {
               orderByChild:'section',
               equalTo: this.route.snapshot.paramMap.get('section')
             }
-        }).subscribe((students) =>{
+        }).take(1).subscribe((students) =>{
           this._students = [];
           
           students.forEach(element => {
             this._students.push({
               name: element.firstName +' '+ element.secondName+' '+ element.firstLastName+' '+ element.secondLastName,
-              state: element.state
+              state: element.state,
+              stateModified: element.stateModified
             })
 
             if(element.state == "Activo" || element.state == "Ausente"){
@@ -150,6 +151,11 @@ export class SectionReportComponent implements OnInit {
     this.router.navigate(['/students/'+this.route.snapshot.paramMap.get('school')+'/'+this.route.snapshot.paramMap.get('section')]);
   }
 
+  formatDate(date){
+    let _date = new Date(date);
+    return _date.getDate()+'/'+(_date.getMonth()+1)+'/'+_date.getFullYear();
+  }
+
   s2ab(s:string):ArrayBuffer{
     let buf = new ArrayBuffer(s.length);
     let view = new Uint8Array(buf);
@@ -167,7 +173,7 @@ export class SectionReportComponent implements OnInit {
 
         //Rangos de la tablas
         let rangeFirstTable= "A1:B"+(this._states.length+1);
-        let rangeSecondTable= "A"+secondTableStart +":B"+(secondTableStart+this._students.length);
+        let rangeSecondTable= "A"+secondTableStart +":C"+(secondTableStart+this._students.length);
         
         //Agregando borde a la primera tabla
         workbook.sheet(0).range(rangeFirstTable).style({
@@ -228,6 +234,7 @@ export class SectionReportComponent implements OnInit {
         //Ancho de la columnas
         workbook.sheet(0).column("A").width(40);
         workbook.sheet(0).column("B").width(25);
+        workbook.sheet(0).column("C").width(25);
 
         //Headers de la primera tabla
         workbook.sheet(0).cell("A1").value("Estado");
@@ -273,6 +280,7 @@ export class SectionReportComponent implements OnInit {
         //Headers de la segunda tabla
         workbook.sheet(0).cell("A"+secondTableStart).value("Nombre");
         workbook.sheet(0).cell("B"+secondTableStart).value("Estado");
+        workbook.sheet(0).cell("C"+secondTableStart).value("Último cambio");
 
         workbook.sheet(0).cell("A"+secondTableStart).style({
           bold:true, 
@@ -292,6 +300,15 @@ export class SectionReportComponent implements OnInit {
             }
           }
         });
+        workbook.sheet(0).cell("C"+secondTableStart).style({
+          bold:true, 
+          fill:{
+            type:'solid',
+            color:{
+              rgb:'c0c0c0'
+            }
+          }
+        });
 
         //Ciclo para agregar contenido de la segunta tabla
         for(let i=0; i<this._students.length; i++){
@@ -300,9 +317,11 @@ export class SectionReportComponent implements OnInit {
           //más una separación de tres celdas entre cada tabla.
           let index_a = 'A'+(secondTableStart+i+1);
           let index_b = 'B'+(secondTableStart+i+1);
+          let index_c = 'C'+(secondTableStart+i+1);
 
           workbook.sheet(0).cell(index_a).value(this._students[i].name);
           workbook.sheet(0).cell(index_b).value(this._students[i].state);
+          workbook.sheet(0).cell(index_c).value(this.formatDate(this._students[i].stateModified));
         }
 
         //Exportando como blob y usando saveAs para descargarlo
@@ -317,7 +336,7 @@ export class SectionReportComponent implements OnInit {
 
   //ESTE METODO QUEDA EN CASO QUE EL METODO DE DESCARGA DEJE DE FUNCIONAR
   //COMO ALTERNATIVA
-  downloadReport(){
+  /*downloadReport(){
     console.log("DESCARGANDO!");
     if(this._students && this._states){
       let wb = XLSX.utils.book_new();
@@ -355,6 +374,6 @@ export class SectionReportComponent implements OnInit {
       saveAs(new Blob([this.s2ab(wbout)]), this._filename);
     }
 
-  }
+  }*/
 
 }

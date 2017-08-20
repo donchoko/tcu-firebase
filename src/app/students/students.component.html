@@ -29,6 +29,9 @@
   <div class="col-12">
     <h3>Lista de estudiantes</h3>
   </div>
+  <div class="col-12">
+    <h3>{{(this._section|async)?.course + " - " + (this._section|async)?.section}}</h3>
+  </div>
 </div>
 <div class="row">
   <div class="col-md-12 table-responsive mt-5">
@@ -39,6 +42,7 @@
           <th>Apellidos</th>
           <th>Cédula</th>
           <th>Estado</th>
+          <th>Último cambio</th>
           <th></th>
           <th></th>
         </tr>
@@ -49,6 +53,7 @@
           <td>{{student.firstLastName+' '+student.secondLastName}}</td>
           <td>{{student.identification}}</td>
           <td>{{student.state}}</td>
+          <td>{{student.stateModified | date:'dd/MM/yyyy'}}</td>
           <td>
             <button class="btn btn-info btn-block" (click)="this.goEditStudent(student.$key)" *ngIf="this._loggedUser?.role=='ADMIN'">Editar</button>
           </td>

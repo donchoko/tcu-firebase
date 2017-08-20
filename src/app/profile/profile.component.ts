@@ -32,7 +32,7 @@ export class ProfileComponent implements OnInit {
         this._loggedUser = this.db.object('/users/'+authUser.uid).subscribe((user)=>{
           this._loggedUser = user;
         });
-        this.db.object('/students/'+this.route.snapshot.paramMap.get('student'))
+        this.db.object('/students/'+this.route.snapshot.paramMap.get('student')).takeUntil(this.ngUnsubscribe)
         .subscribe(
           (student)=> {
             this._student = student
